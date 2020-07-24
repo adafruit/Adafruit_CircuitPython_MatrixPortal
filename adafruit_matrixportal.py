@@ -302,6 +302,21 @@ class MatrixPortal:
     ):
         """
         Add text labels with settings
+
+        :param str text_font: The path to your font file for your data text display.
+        :param text_position: The position of your extracted text on the display in an (x, y) tuple.
+                              Can be a list of tuples for when there's a list of json_paths, for
+                              example.
+        :param text_color: The color of the text, in 0xRRGGBB format. Can be a list of colors for
+                           when there's multiple texts. Defaults to ``None``.
+        :param text_wrap: Whether or not to wrap text (for long text data chunks). Defaults to
+                          ``False``, no wrapping.
+        :param text_maxlen: The max length of the text for text wrapping. Defaults to 0.
+        :param text_transform: A function that will be called on the text before display
+        :param bool scrolling: If true, text is placed offscreen and the scroll() function is used
+                               to scroll text on a pixel-by-pixel basis. Multiple text labels with
+                               the scrolling set to True will be cycled through.
+
         """
         if text_font:
             if text_font is terminalio.FONT:
@@ -335,6 +350,7 @@ class MatrixPortal:
         """Set the headers used by fetch().
 
         :param headers: The new header dictionary
+
         """
         self._headers = headers
 
@@ -386,6 +402,7 @@ class MatrixPortal:
     def preload_font(self, glyphs=None):
         # pylint: disable=line-too-long
         """Preload font.
+
         :param glyphs: The font glyphs to load. Defaults to ``None``, uses alphanumeric glyphs if
                        None.
         """
