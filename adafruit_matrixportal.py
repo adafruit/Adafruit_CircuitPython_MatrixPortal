@@ -40,9 +40,9 @@ from adafruit_bitmap_font import bitmap_font
 import displayio
 from adafruit_display_text.label import Label
 from adafruit_io.adafruit_io import IO_HTTP, AdafruitIO_RequestError
+import adafruit_requests as requests
 import supervisor
 import rtc
-import adafruit_requests as requests
 import rgbmatrix
 import framebufferio
 
