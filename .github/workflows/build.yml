@@ -59,3 +59,14 @@ jobs:
     - name: Build docs
       working-directory: docs
       run: sphinx-build -E -W -b html . _build/html
+    - name: Check For setup.py
+      id: need-pypi
+      run: |
+        echo ::set-output name=setup-py::$( find . -wholename './setup.py' )
+    - name: Build Python package
+      if: contains(steps.need-pypi.outputs.setup-py, 'setup.py')
+      run: |
+        pip install --upgrade setuptools wheel twine readme_renderer testresources
+        python setup.py sdist
+        python setup.py bdist_wheel --universal
+        twine check dist/*
