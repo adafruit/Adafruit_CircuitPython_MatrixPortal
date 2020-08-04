@@ -30,9 +30,9 @@ import time
 import gc
 import adafruit_esp32spi.adafruit_esp32spi_socket as socket
 from adafruit_io.adafruit_io import IO_HTTP, AdafruitIO_RequestError
+import adafruit_requests as requests
 from adafruit_matrixportal.wifi import WiFi
 from adafruit_matrixportal.fakerequests import Fake_Requests
-import adafruit_requests as requests
 import supervisor
 import rtc
 
