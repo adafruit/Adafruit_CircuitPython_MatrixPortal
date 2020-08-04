@@ -53,5 +53,5 @@ setup(
     "metro rgbmatrix",
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
-    py_modules=["adafruit_matrixportal"],
+    packages=["adafruit_matrixportal"],
 )
