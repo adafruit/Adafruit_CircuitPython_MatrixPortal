@@ -79,19 +79,28 @@ class Network:
     :param esp: A passed ESP32 object, Can be used in cases where the ESP32 chip needs to be used
                              before calling the pyportal class. Defaults to ``None``.
     :param busio.SPI external_spi: A previously declared spi object. Defaults to ``None``.
+    :param bool extract_values: If true, single-length fetched values are automatically extracted
+                                from lists and tuples. Defaults to ``True``.
     :param debug: Turn on debug print outs. Defaults to False.
 
     """
 
     # pylint: disable=too-many-instance-attributes, too-many-locals, too-many-branches, too-many-statements
     def __init__(
-        self, *, status_neopixel=None, esp=None, external_spi=None, debug=False
+        self,
+        *,
+        status_neopixel=None,
+        esp=None,
+        external_spi=None,
+        extract_values=True,
+        debug=False,
     ):
         self._wifi = WiFi(
             status_neopixel=status_neopixel, esp=esp, external_spi=external_spi
         )
         self._debug = debug
         self.json_transform = []
+        self._extract_values = extract_values
 
         try:
             os.stat(LOCALFILE)
@@ -117,10 +126,14 @@ class Network:
         Traverse down the specified JSON path and return the value or values
 
         :param json: JSON data to traverse
-        :param str path: The path that we want to follow
+        :param list path: The path that we want to follow
 
         """
         value = json
+        if not isinstance(path, (list, tuple)):
+            raise ValueError(
+                "The json_path parameter should be enclosed in a list or tuple."
+            )
         for x in path:
             value = value[x]
             gc.collect()
@@ -368,6 +381,7 @@ class Network:
                 raise
 
         # extract desired text/values from json
+        print("jp", json_path)
         if json_path:
             for path in json_path:
                 try:
@@ -385,6 +399,8 @@ class Network:
         json_out = None
         response = None
         gc.collect()
+        if self._extract_values and len(values) == 1:
+            return values[0]
 
         return values
 
