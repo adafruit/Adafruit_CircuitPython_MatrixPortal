@@ -33,7 +33,6 @@ matrixportal = MatrixPortal(
     url=DATA_SOURCE,
     json_path=DATA_LOCATION,
     status_neopixel=board.NEOPIXEL,
-    debug=True,
 )
 
 matrixportal.add_text(
