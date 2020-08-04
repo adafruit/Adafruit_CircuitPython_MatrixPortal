@@ -351,7 +351,6 @@ class Network:
         self, url, *, headers=None, json_path=None, regexp_path=None, timeout=10,
     ):
         """Fetch data from the specified url and perfom any parsing"""
-
         json_out = None
         values = []
 
@@ -381,7 +380,6 @@ class Network:
                 raise
 
         # extract desired text/values from json
-        print("jp", json_path)
         if json_path:
             for path in json_path:
                 try:
