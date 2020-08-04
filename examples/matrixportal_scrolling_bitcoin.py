@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2017 Scott Shawcroft, written for Adafruit Industries
+# SPDX-FileCopyrightText: 2020 Melissa LeBlanc-Williams, written for Adafruit Industries
 #
 # SPDX-License-Identifier: Unlicense
 """
@@ -7,7 +7,7 @@ This example checks the current Bitcoin price and scrolls it across the screen
 import time
 import board
 import terminalio
-from adafruit_matrixportal import MatrixPortal
+from adafruit_matrixportal.matrixportal import MatrixPortal
 
 # You can display in 'GBP', 'EUR' or 'USD'
 CURRENCY = "USD"

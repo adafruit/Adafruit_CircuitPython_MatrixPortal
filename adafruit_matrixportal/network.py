@@ -386,8 +386,6 @@ class Network:
         response = None
         gc.collect()
 
-        if len(values) == 1:
-            return values[0]
         return values
 
     @property
