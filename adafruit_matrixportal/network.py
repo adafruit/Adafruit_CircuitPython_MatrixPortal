@@ -117,7 +117,7 @@ class Network:
         Traverse down the specified JSON path and return the value or values
 
         :param json: JSON data to traverse
-        :param str path" The path that we want to follow
+        :param str path: The path that we want to follow
 
         """
         value = json
