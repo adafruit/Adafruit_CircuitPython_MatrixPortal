@@ -72,6 +72,8 @@ class WiFi:
                 spi, esp32_cs, esp32_ready, esp32_reset, esp32_gpio0
             )
 
+        self._manager = None
+
         gc.collect()
 
     def neo_status(self, value):
@@ -84,5 +86,9 @@ class WiFi:
             self.neopix.fill(value)
 
     def manager(self, secrets):
-        """Initialize and return the WiFi Manager"""
-        return adafruit_esp32spi_wifimanager.ESPSPI_WiFiManager(self.esp, secrets, None)
+        """Initialize the WiFi Manager if it hasn't been cached and return it"""
+        if self._manager is None:
+            self._manager = adafruit_esp32spi_wifimanager.ESPSPI_WiFiManager(
+                self.esp, secrets, None
+            )
+        return self._manager

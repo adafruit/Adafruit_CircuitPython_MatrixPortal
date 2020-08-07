@@ -25,6 +25,8 @@ Implementation Notes
 
 """
 
+import json
+
 __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_MatrixPortal.git"
 
@@ -34,11 +36,14 @@ class Fake_Requests:
 
     def __init__(self, filename):
         self._filename = filename
-        with open(filename, "r") as file:
-            self.text = file.read()
 
     def json(self):
         """json parsed version for local requests."""
-        import json  # pylint: disable=import-outside-toplevel
+        with open(self._filename, "r") as file:
+            return json.load(file)
 
-        return json.loads(self.text)
+    @property
+    def text(self):
+        """raw text version for local requests."""
+        with open(self._filename, "r") as file:
+            return file.read()

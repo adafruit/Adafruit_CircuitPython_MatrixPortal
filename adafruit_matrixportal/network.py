@@ -203,7 +203,6 @@ class Network:
         now = time.struct_time(
             (year, month, mday, hours, minutes, seconds, week_day, year_day, is_dst)
         )
-        print(now)
         rtc.RTC().datetime = now
 
         # now clean up
