@@ -84,6 +84,7 @@ class MatrixPortal:
             status_neopixel=status_neopixel,
             esp=esp,
             external_spi=external_spi,
+            extract_values=False,
             debug=debug,
         )
 
