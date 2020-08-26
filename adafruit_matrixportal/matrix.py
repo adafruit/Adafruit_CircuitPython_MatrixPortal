@@ -64,4 +64,4 @@ class Matrix:
             )
             self.display = framebufferio.FramebufferDisplay(matrix)
         except ValueError:
-            raise RuntimeError("Failed to initialize RGB Matrix")
+            raise RuntimeError("Failed to initialize RGB Matrix") from ValueError

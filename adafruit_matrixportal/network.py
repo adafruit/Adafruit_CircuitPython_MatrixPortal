@@ -31,10 +31,10 @@ import gc
 import adafruit_esp32spi.adafruit_esp32spi_socket as socket
 from adafruit_io.adafruit_io import IO_HTTP, AdafruitIO_RequestError
 import adafruit_requests as requests
-from adafruit_matrixportal.wifi import WiFi
-from adafruit_matrixportal.fakerequests import Fake_Requests
 import supervisor
 import rtc
+from adafruit_matrixportal.wifi import WiFi
+from adafruit_matrixportal.fakerequests import Fake_Requests
 
 try:
     from secrets import secrets
@@ -166,7 +166,7 @@ class Network:
         except KeyError:
             raise KeyError(
                 "\n\nOur time service requires a login/password to rate-limit. Please register for a free adafruit.io account and place the user/key in your secrets file under 'aio_username' and 'aio_key'"  # pylint: disable=line-too-long
-            )
+            ) from KeyError
 
         location = secrets.get("timezone", location)
         if location:
@@ -196,7 +196,7 @@ class Network:
         except KeyError:
             raise KeyError(
                 "Was unable to lookup the time, try setting secrets['timezone'] according to http://worldtimeapi.org/timezones"  # pylint: disable=line-too-long
-            )
+            ) from KeyError
         year, month, mday = [int(x) for x in the_date.split("-")]
         the_time = the_time.split(".")[0]
         hours, minutes, seconds = [int(x) for x in the_time.split(":")]
@@ -293,7 +293,7 @@ class Network:
         except KeyError:
             raise KeyError(
                 "Adafruit IO secrets are kept in secrets.py, please add them there!\n\n"
-            )
+            ) from KeyError
 
         io_client = IO_HTTP(aio_username, aio_key, self._wifi.manager(secrets))
 
