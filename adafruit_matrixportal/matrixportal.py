@@ -88,15 +88,11 @@ class MatrixPortal:
             debug=debug,
         )
 
-        self._url = url
+        self._url = None
+        self.url = url
         self._headers = headers
-        if json_path:
-            if isinstance(json_path[0], (list, tuple)):
-                self._json_path = json_path
-            else:
-                self._json_path = (json_path,)
-        else:
-            self._json_path = None
+        self._json_path = None
+        self.json_path = json_path
 
         self._regexp_path = regexp_path
 
@@ -110,12 +106,6 @@ class MatrixPortal:
         self._bg_file = None
         self._default_bg = default_bg
         self.splash.append(self._bg_group)
-
-        if url and not self._network.uselocal:
-            self._network.connect()
-
-        if self._debug:
-            print("My IP address is", self._network.ip_address)
 
         # set the default background
         self.set_background(self._default_bg)
@@ -297,6 +287,10 @@ class MatrixPortal:
                 self._text[index].y = self._text_position[index][1]
                 self.splash.append(self._text[index])
 
+    def get_local_time(self, location=None):
+        """Accessor function for get_local_time()"""
+        return self._network.get_local_time(location=location)
+
     def _get_next_scrollable_text_index(self):
         index = self._scrolling_index
         while True:
@@ -396,3 +390,36 @@ class MatrixPortal:
         # remove first space from first line:
         the_lines[0] = the_lines[0][1:]
         return the_lines
+
+    @property
+    def url(self):
+        """
+        Get or set the URL of your data source.
+        """
+        return self._json_path
+
+    @url.setter
+    def url(self, value):
+        self._url = value
+        if value and not self._network.uselocal:
+            self._network.connect()
+            if self._debug:
+                print("My IP address is", self._network.ip_address)
+
+    @property
+    def json_path(self):
+        """
+        Get or set the list of json traversal to get data out of. Can be list
+        of lists for multiple data points.
+        """
+        return self._json_path
+
+    @json_path.setter
+    def json_path(self, value):
+        if value:
+            if isinstance(value[0], (list, tuple)):
+                self._json_path = value
+            else:
+                self._json_path = (value,)
+        else:
+            self._json_path = None
