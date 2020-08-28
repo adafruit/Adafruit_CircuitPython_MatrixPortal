@@ -56,6 +56,7 @@ class MatrixPortal:
     :param esp: A passed ESP32 object, Can be used in cases where the ESP32 chip needs to be used
                              before calling the pyportal class. Defaults to ``None``.
     :param busio.SPI external_spi: A previously declared spi object. Defaults to ``None``.
+    :param int bit_depth: The number of bits per color channel. Defaults to 2.
     :param debug: Turn on debug print outs. Defaults to False.
 
     """
@@ -73,11 +74,12 @@ class MatrixPortal:
         json_transform=None,
         esp=None,
         external_spi=None,
+        bit_depth=2,
         debug=False
     ):
 
         self._debug = debug
-        matrix = Matrix(bit_depth=2, width=64, height=32)
+        matrix = Matrix(bit_depth=bit_depth, width=64, height=32)
         self.display = matrix.display
 
         self._network = Network(
