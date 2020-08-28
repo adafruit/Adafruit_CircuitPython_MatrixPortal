@@ -355,7 +355,11 @@ class Network:
 
         response = self.fetch(url, headers=headers, timeout=timeout)
 
-        if json_path:
+        if json_path is not None:
+            if isinstance(json_path, (list, tuple)) and (
+                not json_path or not isinstance(json_path[0], (list, tuple))
+            ):
+                json_path = (json_path,)
             try:
                 gc.collect()
                 json_out = response.json()
