@@ -26,12 +26,12 @@ Implementation Notes
 """
 
 import gc
+from time import sleep
 import terminalio
-import displayio
 from adafruit_bitmap_font import bitmap_font
 from adafruit_display_text.label import Label
 from adafruit_matrixportal.network import Network
-from adafruit_matrixportal.matrix import Matrix
+from adafruit_matrixportal.graphics import Graphics
 
 __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_MatrixPortal.git"
@@ -79,8 +79,10 @@ class MatrixPortal:
     ):
 
         self._debug = debug
-        matrix = Matrix(bit_depth=bit_depth, width=64, height=32)
-        self.display = matrix.display
+        self._graphics = Graphics(
+            default_bg=default_bg, bit_depth=bit_depth, width=64, height=32, debug=debug
+        )
+        self.display = self._graphics.display
 
         self._network = Network(
             status_neopixel=status_neopixel,
@@ -98,20 +100,7 @@ class MatrixPortal:
 
         self._regexp_path = regexp_path
 
-        if self._debug:
-            print("Init display")
-        self.splash = displayio.Group(max_size=15)
-
-        if self._debug:
-            print("Init background")
-        self._bg_group = displayio.Group(max_size=1)
-        self._bg_file = None
-        self._default_bg = default_bg
-        self.splash.append(self._bg_group)
-
-        # set the default background
-        self.set_background(self._default_bg)
-        self.display.show(self.splash)
+        self.splash = self._graphics.splash
 
         # Add any JSON translators
         if json_transform:
@@ -200,39 +189,7 @@ class MatrixPortal:
         :param file_or_color: The filename of the chosen background image, or a hex color.
 
         """
-        print("Set background to ", file_or_color)
-        while self._bg_group:
-            self._bg_group.pop()
-
-        if not position:
-            position = (0, 0)  # default in top corner
-
-        if not file_or_color:
-            return  # we're done, no background desired
-        if self._bg_file:
-            self._bg_file.close()
-        if isinstance(file_or_color, str):  # its a filenme:
-            self._bg_file = open(file_or_color, "rb")
-            background = displayio.OnDiskBitmap(self._bg_file)
-            self._bg_sprite = displayio.TileGrid(
-                background,
-                pixel_shader=displayio.ColorConverter(),
-                x=position[0],
-                y=position[1],
-            )
-        elif isinstance(file_or_color, int):
-            # Make a background color fill
-            color_bitmap = displayio.Bitmap(self.display.width, self.display.height, 1)
-            color_palette = displayio.Palette(1)
-            color_palette[0] = file_or_color
-            self._bg_sprite = displayio.TileGrid(
-                color_bitmap, pixel_shader=color_palette, x=position[0], y=position[1],
-            )
-        else:
-            raise RuntimeError("Unknown type of background")
-        self._bg_group.append(self._bg_sprite)
-        self.display.refresh()
-        gc.collect()
+        self._graphics.set_background(file_or_color, position)
 
     def preload_font(self, glyphs=None):
         # pylint: disable=line-too-long
@@ -307,10 +264,47 @@ class MatrixPortal:
             if index == self._scrolling_index:
                 return None
 
+    def push_to_io(self, feed_key, data):
+        """Push data to an adafruit.io feed
+
+        :param str feed_key: Name of feed key to push data to.
+        :param data: data to send to feed
+
+        """
+
+        self._network.push_to_io(feed_key, data)
+
+    def get_io_data(self, feed_key):
+        """Return all values from the Adafruit IO Feed Data that matches the feed key
+
+        :param str feed_key: Name of feed key to receive data from.
+
+        """
+
+        return self._network.get_io_data(feed_key)
+
+    def get_io_feed(self, feed_key, detailed=False):
+        """Return the Adafruit IO Feed that matches the feed key
+
+        :param str feed_key: Name of feed key to match.
+        :param bool detailed: Whether to return additional detailed information
+
+        """
+        return self._network.get_io_feed(feed_key, detailed)
+
+    def get_io_group(self, group_key):
+        """Return the Adafruit IO Group that matches the group key
+
+        :param str group_key: Name of group key to match.
+
+        """
+        return self._network.get_io_group(group_key)
+
     def scroll(self):
-        """Scroll any text that needs scrolling. We also want to queue up
-        multiple lines one after another. To get simultaneous lines, we can
-        simply use a line break."""
+        """Scroll any text that needs scrolling by a single frame. We also
+        we want to queue up multiple lines one after another. To get
+        simultaneous lines, we can simply use a line break.
+        """
 
         if self._scrolling_index is None:  # Not initialized yet
             next_index = self._get_next_scrollable_text_index()
@@ -318,14 +312,29 @@ class MatrixPortal:
                 return
             self._scrolling_index = next_index
 
-        # set line to label with self._scrolling_index
-
         self._text[self._scrolling_index].x = self._text[self._scrolling_index].x - 1
         line_width = self._text[self._scrolling_index].bounding_box[2]
         if self._text[self._scrolling_index].x < -line_width:
             # Find the next line
             self._scrolling_index = self._get_next_scrollable_text_index()
-            self._text[self._scrolling_index].x = self.display.width
+            self._text[self._scrolling_index].x = self._graphics.display.width
+
+    def scroll_text(self, frame_delay=0.02):
+        """Scroll the entire text all the way across. We also
+        we want to queue up multiple lines one after another. To get
+        simultaneous lines, we can simply use a line break.
+        """
+        if self._scrolling_index is None:  # Not initialized yet
+            next_index = self._get_next_scrollable_text_index()
+            if next_index is None:
+                return
+            self._scrolling_index = next_index
+
+        self._text[self._scrolling_index].x = self._graphics.display.width
+        line_width = self._text[self._scrolling_index].bounding_box[2]
+        for _ in range(self._graphics.display.width + line_width + 1):
+            self.scroll()
+            sleep(frame_delay)
 
     def fetch(self, refresh_url=None, timeout=10):
         """Fetch data from the url we initialized with, perfom any parsing,
