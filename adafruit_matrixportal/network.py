@@ -279,14 +279,7 @@ class Network:
                 print("Retrying in 3 seconds...")
                 time.sleep(3)
 
-    def push_to_io(self, feed_key, data):
-        """Push data to an adafruit.io feed
-
-        :param str feed_key: Name of feed key to push data to.
-        :param data: data to send to feed
-
-        """
-
+    def _get_io_client(self):
         try:
             aio_username = secrets["aio_username"]
             aio_key = secrets["aio_key"]
@@ -295,7 +288,17 @@ class Network:
                 "Adafruit IO secrets are kept in secrets.py, please add them there!\n\n"
             ) from KeyError
 
-        io_client = IO_HTTP(aio_username, aio_key, self._wifi.manager(secrets))
+        return IO_HTTP(aio_username, aio_key, self._wifi.manager(secrets))
+
+    def push_to_io(self, feed_key, data):
+        """Push data to an adafruit.io feed
+
+        :param str feed_key: Name of feed key to push data to.
+        :param data: data to send to feed
+
+        """
+
+        io_client = self._get_io_client()
 
         while True:
             try:
@@ -316,6 +319,55 @@ class Network:
                 continue
             except NameError as exception:
                 print(feed_id["key"], data, exception)
+                continue
+            break
+
+    def get_io_feed(self, feed_key, detailed=False):
+        """Return the Adafruit IO Feed that matches the feed key
+
+        :param str feed_key: Name of feed key to match.
+        :param bool detailed: Whether to return additional detailed information
+
+        """
+        io_client = self._get_io_client()
+
+        while True:
+            try:
+                return io_client.get_feed(feed_key, detailed=detailed)
+            except RuntimeError as exception:
+                print("An error occured, retrying! 1 -", exception)
+                continue
+            break
+
+    def get_io_group(self, group_key):
+        """Return the Adafruit IO Group that matches the group key
+
+        :param str group_key: Name of group key to match.
+
+        """
+        io_client = self._get_io_client()
+
+        while True:
+            try:
+                return io_client.get_group(group_key)
+            except RuntimeError as exception:
+                print("An error occured, retrying! 1 -", exception)
+                continue
+            break
+
+    def get_io_data(self, feed_key):
+        """Return all values from Adafruit IO Feed Data that matches the feed key
+
+        :param str feed_key: Name of feed key to receive data from.
+
+        """
+        io_client = self._get_io_client()
+
+        while True:
+            try:
+                return io_client.receive_all_data(feed_key)
+            except RuntimeError as exception:
+                print("An error occured, retrying! 1 -", exception)
                 continue
             break
 
