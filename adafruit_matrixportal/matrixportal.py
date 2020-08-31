@@ -79,12 +79,12 @@ class MatrixPortal:
     ):
 
         self._debug = debug
-        self._graphics = Graphics(
+        self.graphics = Graphics(
             default_bg=default_bg, bit_depth=bit_depth, width=64, height=32, debug=debug
         )
-        self.display = self._graphics.display
+        self.display = self.graphics.display
 
-        self._network = Network(
+        self.network = Network(
             status_neopixel=status_neopixel,
             esp=esp,
             external_spi=external_spi,
@@ -100,11 +100,11 @@ class MatrixPortal:
 
         self._regexp_path = regexp_path
 
-        self.splash = self._graphics.splash
+        self.splash = self.graphics.splash
 
         # Add any JSON translators
         if json_transform:
-            self._network.ad.json_transform(json_transform)
+            self.network.add_json_transform(json_transform)
 
         self._text = []
         self._text_color = []
@@ -166,14 +166,30 @@ class MatrixPortal:
         if self._debug:
             print("Init text area")
         self._text.append(None)
-        self._text_color.append(text_color)
+        self._text_color.append(self.html_color_convert(text_color))
         self._text_position.append(text_position)
         self._text_wrap.append(text_wrap)
         self._text_maxlen.append(text_maxlen)
         self._text_transform.append(text_transform)
         self._text_scrolling.append(scrolling)
 
+        if scrolling and self._scrolling_index is None:  # Not initialized yet
+            self._scrolling_index = self._get_next_scrollable_text_index()
+
     # pylint: enable=too-many-arguments
+
+    @staticmethod
+    def html_color_convert(color):
+        """Convert an HTML color code to an integer
+
+        :param color: The color value to be converted
+
+        """
+        if isinstance(color, str):
+            if color[0] == "#":
+                color = color.lstrip("#")
+            return int(color, 16)
+        return color  # Return unconverted
 
     def set_headers(self, headers):
         """Set the headers used by fetch().
@@ -189,7 +205,7 @@ class MatrixPortal:
         :param file_or_color: The filename of the chosen background image, or a hex color.
 
         """
-        self._graphics.set_background(file_or_color, position)
+        self.graphics.set_background(file_or_color, position)
 
     def preload_font(self, glyphs=None):
         # pylint: disable=line-too-long
@@ -204,6 +220,18 @@ class MatrixPortal:
         print("Preloading font glyphs:", glyphs)
         if self._text_font and self._text_font is not terminalio.FONT:
             self._text_font.load_glyphs(glyphs)
+
+    def set_text_color(self, color, index=0):
+        """Update the text color, with indexing into our list of text boxes.
+
+        :param int color: The color value to be used
+        :param index: Defaults to 0.
+
+        """
+        if self._text[index]:
+            color = self.html_color_convert(color)
+            self._text_color[index] = color
+            self._text[index].color = color
 
     def set_text(self, val, index=0):
         """Display text, with indexing into our list of text boxes.
@@ -248,7 +276,7 @@ class MatrixPortal:
 
     def get_local_time(self, location=None):
         """Accessor function for get_local_time()"""
-        return self._network.get_local_time(location=location)
+        return self.network.get_local_time(location=location)
 
     def _get_next_scrollable_text_index(self):
         index = self._scrolling_index
@@ -272,7 +300,7 @@ class MatrixPortal:
 
         """
 
-        self._network.push_to_io(feed_key, data)
+        self.network.push_to_io(feed_key, data)
 
     def get_io_data(self, feed_key):
         """Return all values from the Adafruit IO Feed Data that matches the feed key
@@ -281,7 +309,7 @@ class MatrixPortal:
 
         """
 
-        return self._network.get_io_data(feed_key)
+        return self.network.get_io_data(feed_key)
 
     def get_io_feed(self, feed_key, detailed=False):
         """Return the Adafruit IO Feed that matches the feed key
@@ -290,7 +318,7 @@ class MatrixPortal:
         :param bool detailed: Whether to return additional detailed information
 
         """
-        return self._network.get_io_feed(feed_key, detailed)
+        return self.network.get_io_feed(feed_key, detailed)
 
     def get_io_group(self, group_key):
         """Return the Adafruit IO Group that matches the group key
@@ -298,7 +326,7 @@ class MatrixPortal:
         :param str group_key: Name of group key to match.
 
         """
-        return self._network.get_io_group(group_key)
+        return self.network.get_io_group(group_key)
 
     def scroll(self):
         """Scroll any text that needs scrolling by a single frame. We also
@@ -307,17 +335,14 @@ class MatrixPortal:
         """
 
         if self._scrolling_index is None:  # Not initialized yet
-            next_index = self._get_next_scrollable_text_index()
-            if next_index is None:
-                return
-            self._scrolling_index = next_index
+            return
 
         self._text[self._scrolling_index].x = self._text[self._scrolling_index].x - 1
         line_width = self._text[self._scrolling_index].bounding_box[2]
         if self._text[self._scrolling_index].x < -line_width:
             # Find the next line
             self._scrolling_index = self._get_next_scrollable_text_index()
-            self._text[self._scrolling_index].x = self._graphics.display.width
+            self._text[self._scrolling_index].x = self.graphics.display.width
 
     def scroll_text(self, frame_delay=0.02):
         """Scroll the entire text all the way across. We also
@@ -325,14 +350,11 @@ class MatrixPortal:
         simultaneous lines, we can simply use a line break.
         """
         if self._scrolling_index is None:  # Not initialized yet
-            next_index = self._get_next_scrollable_text_index()
-            if next_index is None:
-                return
-            self._scrolling_index = next_index
+            return
 
-        self._text[self._scrolling_index].x = self._graphics.display.width
+        self._text[self._scrolling_index].x = self.graphics.display.width
         line_width = self._text[self._scrolling_index].bounding_box[2]
-        for _ in range(self._graphics.display.width + line_width + 1):
+        for _ in range(self.graphics.display.width + line_width + 1):
             self.scroll()
             sleep(frame_delay)
 
@@ -345,7 +367,7 @@ class MatrixPortal:
             self._url = refresh_url
         values = []
 
-        values = self._network.fetch_data(
+        values = self.network.fetch_data(
             self._url,
             headers=self._headers,
             json_path=self._json_path,
@@ -412,10 +434,10 @@ class MatrixPortal:
     @url.setter
     def url(self, value):
         self._url = value
-        if value and not self._network.uselocal:
-            self._network.connect()
+        if value and not self.network.uselocal:
+            self.network.connect()
             if self._debug:
-                print("My IP address is", self._network.ip_address)
+                print("My IP address is", self.network.ip_address)
 
     @property
     def json_path(self):
