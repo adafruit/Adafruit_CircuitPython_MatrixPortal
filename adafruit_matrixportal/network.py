@@ -280,6 +280,8 @@ class Network:
                 time.sleep(3)
 
     def _get_io_client(self):
+        self.connect()
+
         try:
             aio_username = secrets["aio_username"]
             aio_key = secrets["aio_key"]
