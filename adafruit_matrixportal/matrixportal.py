@@ -251,27 +251,19 @@ class MatrixPortal:
         if self._text_maxlen[index]:
             string = string[: self._text_maxlen[index]]
         print("text index", self._text[index])
+        index_in_splash = None
         if self._text[index] is not None:
             print("Replacing text area with :", string)
             self._text[index].text = string
-            text_index = self.splash.index(self._text[index])
+            index_in_splash = self.splash.index(self._text[index])
+        self._text[index] = Label(self._text_font, text=string, max_glyphs=max_glyphs)
+        self._text[index].color = self._text_color[index]
+        self._text[index].x = self._text_position[index][0]
+        self._text[index].y = self._text_position[index][1]
 
-            self._text[index] = Label(
-                self._text_font, text=string, max_glyphs=max_glyphs
-            )
-            self._text[index].color = self._text_color[index]
-            self._text[index].x = self._text_position[index][0]
-            self._text[index].y = self._text_position[index][1]
-            self.splash[text_index] = self._text[index]
-
-        elif self._text_position[index]:  # if we want it placed somewhere...
-            print("Making text area with string:", string)
-            self._text[index] = Label(
-                self._text_font, text=string, max_glyphs=max_glyphs
-            )
-            self._text[index].color = self._text_color[index]
-            self._text[index].x = self._text_position[index][0]
-            self._text[index].y = self._text_position[index][1]
+        if index_in_splash is not None:
+            self.splash[index_in_splash] = self._text[index]
+        else:
             self.splash.append(self._text[index])
 
     def get_local_time(self, location=None):
