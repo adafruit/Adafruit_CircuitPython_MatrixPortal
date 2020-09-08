@@ -149,7 +149,7 @@ class MatrixPortal:
         """
         if text_font:
             if text_font is terminalio.FONT:
-                self._text_font = terminalio.FONT
+                self._text_font = text_font
             else:
                 self._text_font = bitmap_font.load_font(text_font)
         if not text_wrap:
@@ -254,14 +254,7 @@ class MatrixPortal:
         if self._text[index] is not None:
             print("Replacing text area with :", string)
             self._text[index].text = string
-            # return
-            # try:
             text_index = self.splash.index(self._text[index])
-            # except AttributeError:
-            #    for i in range(len(self.splash)):
-            #        if self.splash[i] == self._text[index]:
-            #            text_index = i
-            #            break
 
             self._text[index] = Label(
                 self._text_font, text=string, max_glyphs=max_glyphs
