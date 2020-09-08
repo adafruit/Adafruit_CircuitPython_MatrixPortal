@@ -149,7 +149,7 @@ class MatrixPortal:
         """
         if text_font:
             if text_font is terminalio.FONT:
-                self._text_font = text_font
+                self._text_font = terminalio.FONT
             else:
                 self._text_font = bitmap_font.load_font(text_font)
         if not text_wrap:
@@ -218,7 +218,7 @@ class MatrixPortal:
         if not glyphs:
             glyphs = b"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-!,. \"'?!"
         print("Preloading font glyphs:", glyphs)
-        if self._text_font and self._text_font is not terminalio.FONT:
+        if self._text_font is not terminalio.FONT:
             self._text_font.load_glyphs(glyphs)
 
     def set_text_color(self, color, index=0):
@@ -243,36 +243,43 @@ class MatrixPortal:
         # Make sure at least a single label exists
         if not self._text:
             self.add_text()
-        if self._text_font:
-            string = str(val)
-            if self._text_maxlen[index]:
-                string = string[: self._text_maxlen[index]]
-            if self._text[index]:
-                # print("Replacing text area with :", string)
-                # self._text[index].text = string
-                # return
-                try:
-                    text_index = self.splash.index(self._text[index])
-                except AttributeError:
-                    for i in range(len(self.splash)):
-                        if self.splash[i] == self._text[index]:
-                            text_index = i
-                            break
+        string = str(val)
+        if not string:
+            max_glyphs = 50
+        else:
+            max_glyphs = len(string)
+        if self._text_maxlen[index]:
+            string = string[: self._text_maxlen[index]]
+        print("text index", self._text[index])
+        if self._text[index] is not None:
+            print("Replacing text area with :", string)
+            self._text[index].text = string
+            # return
+            # try:
+            text_index = self.splash.index(self._text[index])
+            # except AttributeError:
+            #    for i in range(len(self.splash)):
+            #        if self.splash[i] == self._text[index]:
+            #            text_index = i
+            #            break
 
-                self._text[index] = Label(self._text_font, text=string)
-                self._text[index].color = self._text_color[index]
-                self._text[index].x = self._text_position[index][0]
-                self._text[index].y = self._text_position[index][1]
-                self.splash[text_index] = self._text[index]
-                return
+            self._text[index] = Label(
+                self._text_font, text=string, max_glyphs=max_glyphs
+            )
+            self._text[index].color = self._text_color[index]
+            self._text[index].x = self._text_position[index][0]
+            self._text[index].y = self._text_position[index][1]
+            self.splash[text_index] = self._text[index]
 
-            if self._text_position[index]:  # if we want it placed somewhere...
-                print("Making text area with string:", string)
-                self._text[index] = Label(self._text_font, text=string)
-                self._text[index].color = self._text_color[index]
-                self._text[index].x = self._text_position[index][0]
-                self._text[index].y = self._text_position[index][1]
-                self.splash.append(self._text[index])
+        elif self._text_position[index]:  # if we want it placed somewhere...
+            print("Making text area with string:", string)
+            self._text[index] = Label(
+                self._text_font, text=string, max_glyphs=max_glyphs
+            )
+            self._text[index].color = self._text_color[index]
+            self._text[index].x = self._text_position[index][0]
+            self._text[index].y = self._text_position[index][1]
+            self.splash.append(self._text[index])
 
     def get_local_time(self, location=None):
         """Accessor function for get_local_time()"""
