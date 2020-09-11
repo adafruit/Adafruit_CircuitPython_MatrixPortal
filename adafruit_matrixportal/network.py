@@ -401,7 +401,13 @@ class Network:
         return response
 
     def fetch_data(
-        self, url, *, headers=None, json_path=None, regexp_path=None, timeout=10,
+        self,
+        url,
+        *,
+        headers=None,
+        json_path=None,
+        regexp_path=None,
+        timeout=10,
     ):
         """Fetch data from the specified url and perfom any parsing"""
         json_out = None

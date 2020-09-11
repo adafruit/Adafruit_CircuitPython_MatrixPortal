@@ -39,16 +39,20 @@ class Matrix:
     """Class representing the Adafruit RGB Matrix. This is used to automatically
     initialize the display.
 
-    :param width: The width of the display in Pixels. Defaults to 64.
-    :param height: The height of the display in Pixels. Defaults to 32.
-    :param bit_depth: The number of bits per color channel. Defaults to 2.
+    :param int width: The width of the display in Pixels. Defaults to 64.
+    :param int height: The height of the display in Pixels. Defaults to 32.
+    :param int bit_depth: The number of bits per color channel. Defaults to 2.
+    :param list alt_addr_pins: An alternate set of address pins to use. Defaults to None
 
     """
 
     # pylint: disable=too-few-public-methods
-    def __init__(
-        self, *, width=64, height=32, bit_depth=2,
-    ):
+    def __init__(self, *, width=64, height=32, bit_depth=2, alt_addr_pins=None):
+
+        if alt_addr_pins is not None:
+            addr_pins = alt_addr_pins
+        else:
+            addr_pins = [board.A0, board.A1, board.A2, board.A3]
 
         try:
             displayio.release_displays()
@@ -57,7 +61,7 @@ class Matrix:
                 height=height,
                 bit_depth=bit_depth,
                 rgb_pins=[board.D2, board.D3, board.D4, board.D5, board.D6, board.D7],
-                addr_pins=[board.A0, board.A1, board.A2, board.A3],
+                addr_pins=addr_pins,
                 clock_pin=board.A4,
                 latch_pin=board.D10,
                 output_enable_pin=board.D9,
