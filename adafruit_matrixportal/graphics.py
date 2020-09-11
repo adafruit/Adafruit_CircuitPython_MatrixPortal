@@ -38,20 +38,30 @@ class Graphics:
 
     :param default_bg: The path to your default background image file or a hex color.
                        Defaults to 0x000000.
-    :param width: The width of the display in Pixels. Defaults to 64.
-    :param height: The height of the display in Pixels. Defaults to 32.
+    :param int width: The width of the display in Pixels. Defaults to 64.
+    :param int height: The height of the display in Pixels. Defaults to 32.
     :param int bit_depth: The number of bits per color channel. Defaults to 2.
+    :param list alt_addr_pins: An alternate set of address pins to use. Defaults to None
     :param debug: Turn on debug print outs. Defaults to False.
 
     """
 
     # pylint: disable=too-many-instance-attributes, too-many-locals, too-many-branches, too-many-statements
     def __init__(
-        self, *, default_bg=0x000000, width=64, height=32, bit_depth=2, debug=False
+        self,
+        *,
+        default_bg=0x000000,
+        width=64,
+        height=32,
+        bit_depth=2,
+        alt_addr_pins=None,
+        debug=False
     ):
 
         self._debug = debug
-        matrix = Matrix(bit_depth=bit_depth, width=width, height=height)
+        matrix = Matrix(
+            bit_depth=bit_depth, width=width, height=height, alt_addr_pins=alt_addr_pins
+        )
         self.display = matrix.display
 
         if self._debug:
