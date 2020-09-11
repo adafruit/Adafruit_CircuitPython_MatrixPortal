@@ -113,10 +113,7 @@ class Graphics:
             color_palette = displayio.Palette(1)
             color_palette[0] = file_or_color
             self._bg_sprite = displayio.TileGrid(
-                color_bitmap,
-                pixel_shader=color_palette,
-                x=position[0],
-                y=position[1],
+                color_bitmap, pixel_shader=color_palette, x=position[0], y=position[1],
             )
         else:
             raise RuntimeError("Unknown type of background")
