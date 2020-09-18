@@ -14,6 +14,7 @@ Implementation Notes
 
 **Hardware:**
 
+* `Adafruit Matrix Portal <https://www.adafruit.com/product/4745>`_
 * `Adafruit Metro M4 Express AirLift <https://www.adafruit.com/product/4000>`_
 * `Adafruit RGB Matrix Shield <https://www.adafruit.com/product/2601>`_
 * `64x32 RGB LED Matrix <https://www.adafruit.com/product/2278>`_
@@ -46,13 +47,58 @@ class Matrix:
 
     """
 
-    # pylint: disable=too-few-public-methods
+    # pylint: disable=too-few-public-methods,too-many-branches
     def __init__(self, *, width=64, height=32, bit_depth=2, alt_addr_pins=None):
 
         if alt_addr_pins is not None:
             addr_pins = alt_addr_pins
+        elif hasattr(board, "MTX_ADDRA"):
+            if height <= 16:
+                addr_pins = [board.MTX_ADDRA, board.MTX_ADDRB, board.MTX_ADDRC]
+            elif height <= 32:
+                addr_pins = [
+                    board.MTX_ADDRA,
+                    board.MTX_ADDRB,
+                    board.MTX_ADDRC,
+                    board.MTX_ADDRD,
+                ]
+            else:
+                addr_pins = [
+                    board.MTX_ADDRA,
+                    board.MTX_ADDRB,
+                    board.MTX_ADDRC,
+                    board.MTX_ADDRD,
+                    board.MTX_ADDRE,
+                ]
         else:
             addr_pins = [board.A0, board.A1, board.A2, board.A3]
+
+        if hasattr(board, "MTX_R1"):
+            rgb_pins = [
+                board.MTX_R1,
+                board.MTX_G1,
+                board.MTX_B1,
+                board.MTX_R2,
+                board.MTX_G2,
+                board.MTX_B2,
+            ]
+        else:
+            rgb_pins = [board.D2, board.D3, board.D4, board.D5, board.D6, board.D7]
+
+        if hasattr(board, "MTX_CLK"):
+            clock_pin = board.MTX_CLK
+        else:
+            clock_pin = board.A4
+
+        if hasattr(board, "MTX_CLK"):
+            latch_pin = board.MTX_LAT
+        else:
+            latch_pin = board.D10
+
+        if hasattr(board, "MTX_OE"):
+            oe_pin = board.MTX_OE
+        else:
+            oe_pin = board.D9
 
         try:
             displayio.release_displays()
@@ -60,11 +106,11 @@ class Matrix:
                 width=width,
                 height=height,
                 bit_depth=bit_depth,
-                rgb_pins=[board.D2, board.D3, board.D4, board.D5, board.D6, board.D7],
+                rgb_pins=rgb_pins,
                 addr_pins=addr_pins,
-                clock_pin=board.A4,
-                latch_pin=board.D10,
-                output_enable_pin=board.D9,
+                clock_pin=clock_pin,
+                latch_pin=latch_pin,
+                output_enable_pin=oe_pin,
             )
             self.display = framebufferio.FramebufferDisplay(matrix)
         except ValueError:
