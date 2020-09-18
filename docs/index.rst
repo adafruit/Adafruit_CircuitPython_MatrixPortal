@@ -26,6 +26,7 @@ Table of Contents
 .. toctree::
     :caption: Related Products
 
+    * Adafruit Matrix Portal <https://www.adafruit.com/product/4745>
     * Adafruit Metro M4 Express AirLift <https://www.adafruit.com/product/4000>
     * Adafruit RGB Matrix Shield <https://www.adafruit.com/product/2601>
     * 64x32 RGB LED Matrix <https://www.adafruit.com/product/2278>
