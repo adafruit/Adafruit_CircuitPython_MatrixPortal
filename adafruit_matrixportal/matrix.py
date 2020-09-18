@@ -53,23 +53,11 @@ class Matrix:
         if alt_addr_pins is not None:
             addr_pins = alt_addr_pins
         elif hasattr(board, "MTX_ADDRA"):
-            if height <= 16:
-                addr_pins = [board.MTX_ADDRA, board.MTX_ADDRB, board.MTX_ADDRC]
-            elif height <= 32:
-                addr_pins = [
-                    board.MTX_ADDRA,
-                    board.MTX_ADDRB,
-                    board.MTX_ADDRC,
-                    board.MTX_ADDRD,
-                ]
-            else:
-                addr_pins = [
-                    board.MTX_ADDRA,
-                    board.MTX_ADDRB,
-                    board.MTX_ADDRC,
-                    board.MTX_ADDRD,
-                    board.MTX_ADDRE,
-                ]
+            addr_pins = [board.MTX_ADDRA, board.MTX_ADDRB, board.MTX_ADDRC]
+            if height > 16:
+                addr_pins.append(board.MTX_ADDRD)
+            if height > 32:
+                addr_pins.append(board.MTX_ADDRE)
         else:
             addr_pins = [board.A0, board.A1, board.A2, board.A3]
 
