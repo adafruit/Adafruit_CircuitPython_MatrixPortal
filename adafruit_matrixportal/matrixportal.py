@@ -258,14 +258,20 @@ class MatrixPortal:
         if self._text[index] is not None:
             print("Replacing text area with :", string)
             index_in_splash = self.splash.index(self._text[index])
-        self._text[index] = Label(self._text_font, text=string)
-        self._text[index].color = self._text_color[index]
-        self._text[index].x = self._text_position[index][0]
-        self._text[index].y = self._text_position[index][1]
+        if len(string) > 0:
+            self._text[index] = Label(self._text_font, text=string)
+            self._text[index].color = self._text_color[index]
+            self._text[index].x = self._text_position[index][0]
+            self._text[index].y = self._text_position[index][1]
+        elif index_in_splash is not None:
+            self._text[index] = None
 
         if index_in_splash is not None:
-            self.splash[index_in_splash] = self._text[index]
-        else:
+            if self._text[index] is not None:
+                self.splash[index_in_splash] = self._text[index]
+            else:
+                del self.splash[index_in_splash]
+        elif self._text[index] is not None:
             self.splash.append(self._text[index])
 
     def get_local_time(self, location=None):
