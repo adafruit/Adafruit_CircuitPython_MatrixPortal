@@ -30,7 +30,7 @@ from time import sleep
 import terminalio
 from adafruit_bitmap_font import bitmap_font
 from adafruit_display_text.label import Label
-from adafruit_matrixportal.network import Network
+
 from adafruit_matrixportal.graphics import Graphics
 
 __version__ = "0.0.0-auto.0"
@@ -77,7 +77,8 @@ class MatrixPortal:
         external_spi=None,
         bit_depth=2,
         alt_addr_pins=None,
-        debug=False
+        debug=False,
+        net=True
     ):
 
         self._debug = debug
@@ -91,13 +92,17 @@ class MatrixPortal:
         )
         self.display = self.graphics.display
 
-        self.network = Network(
-            status_neopixel=status_neopixel,
-            esp=esp,
-            external_spi=external_spi,
-            extract_values=False,
-            debug=debug,
-        )
+        if net:
+            # pylint: disable=import-outside-toplevel
+            from adafruit_matrixportal.network import Network
+
+            self.network = Network(
+                status_neopixel=status_neopixel,
+                esp=esp,
+                external_spi=external_spi,
+                extract_values=False,
+                debug=debug,
+            )
 
         self._url = None
         self.url = url
