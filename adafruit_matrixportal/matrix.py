@@ -26,6 +26,7 @@ Implementation Notes
 
 """
 
+import os
 import board
 import displayio
 import rgbmatrix
@@ -50,18 +51,13 @@ class Matrix:
     # pylint: disable=too-few-public-methods,too-many-branches
     def __init__(self, *, width=64, height=32, bit_depth=2, alt_addr_pins=None):
 
-        if alt_addr_pins is not None:
-            addr_pins = alt_addr_pins
-        elif hasattr(board, "MTX_ADDRA"):
+        if "Matrix Portal M4" in os.uname().machine:
+            # MatrixPortal M4 Board
             addr_pins = [board.MTX_ADDRA, board.MTX_ADDRB, board.MTX_ADDRC]
             if height > 16:
                 addr_pins.append(board.MTX_ADDRD)
             if height > 32:
                 addr_pins.append(board.MTX_ADDRE)
-        else:
-            addr_pins = [board.A0, board.A1, board.A2, board.A3]
-
-        if hasattr(board, "MTX_R1"):
             rgb_pins = [
                 board.MTX_R1,
                 board.MTX_G1,
@@ -70,23 +66,33 @@ class Matrix:
                 board.MTX_G2,
                 board.MTX_B2,
             ]
-        else:
-            rgb_pins = [board.D2, board.D3, board.D4, board.D5, board.D6, board.D7]
-
-        if hasattr(board, "MTX_CLK"):
             clock_pin = board.MTX_CLK
-        else:
-            clock_pin = board.A4
-
-        if hasattr(board, "MTX_CLK"):
             latch_pin = board.MTX_LAT
-        else:
-            latch_pin = board.D10
-
-        if hasattr(board, "MTX_OE"):
             oe_pin = board.MTX_OE
+        elif "Feather" in os.uname().machine:
+            print("Feather Detected")
+            # Feather Style Board
+            if height > 16:
+                addr_pins.append(board.A2)
+            rgb_pins = [board.D6, board.D5, board.D9, board.D11, board.D10, board.D12]
+            clock_pin = board.D13
+            latch_pin = board.D0
+            oe_pin = board.D1
         else:
+            # Metro/Grand Central Style Board
+            if alt_addr_pins is None and height <= 16:
+                raise RuntimeError(
+                    "Pin A2 unavailable in this mode. Please specify alt_addr_pins."
+                )
+            addr_pins = [board.A0, board.A1, board.A2, board.A3]
+            rgb_pins = [board.D2, board.D3, board.D4, board.D5, board.D6, board.D7]
+            clock_pin = board.A4
+            latch_pin = board.D10
             oe_pin = board.D9
+
+        # Alternate Address Pins
+        if alt_addr_pins is not None:
+            addr_pins = alt_addr_pins
 
         try:
             displayio.release_displays()
