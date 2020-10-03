@@ -70,12 +70,27 @@ class Matrix:
             latch_pin = board.MTX_LAT
             oe_pin = board.MTX_OE
         elif "Feather" in os.uname().machine:
-            print("Feather Detected")
             # Feather Style Board
-            if height > 16:
-                addr_pins.append(board.A2)
-            rgb_pins = [board.D6, board.D5, board.D9, board.D11, board.D10, board.D12]
-            clock_pin = board.D13
+            if "nrf52" in os.uname().sysname:
+                # nrf52840 Style Feather
+                addr_pins = [board.D11, board.D5, board.D13]
+                if height > 16:
+                    addr_pins.append(board.D9)
+                rgb_pins = [board.D6, board.A5, board.A1, board.A0, board.A4, board.D11]
+                clock_pin = board.D12
+            else:
+                addr_pins = [board.A5, board.A4, board.A3]
+                if height > 16:
+                    addr_pins.append(board.A2)
+                rgb_pins = [
+                    board.D6,
+                    board.D5,
+                    board.D9,
+                    board.D11,
+                    board.D10,
+                    board.D12,
+                ]
+                clock_pin = board.D13
             latch_pin = board.D0
             oe_pin = board.D1
         else:
