@@ -82,7 +82,14 @@ class Matrix:
                 addr_pins = [board.A5, board.A4, board.A3]
                 if height > 16:
                     addr_pins.append(board.A2)
-                rgb_pins = [board.D6, board.D5, board.D9, board.D11, board.D10, board.D12]
+                rgb_pins = [
+                    board.D6,
+                    board.D5,
+                    board.D9,
+                    board.D11,
+                    board.D10,
+                    board.D12,
+                ]
                 clock_pin = board.D13
             latch_pin = board.D0
             oe_pin = board.D1
