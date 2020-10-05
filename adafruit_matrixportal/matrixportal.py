@@ -58,7 +58,8 @@ class MatrixPortal:
     :param busio.SPI external_spi: A previously declared spi object. Defaults to ``None``.
     :param int bit_depth: The number of bits per color channel. Defaults to 2.
     :param list alt_addr_pins: An alternate set of address pins to use. Defaults to None
-    :param list alt_rgb_pins: An alternate set of rgb pins to use. Defaults to None
+    :param string color_order: A string containing the letter "R", "G", and "B" in the
+                               order you want. Defaults to "RGB"
     :param debug: Turn on debug print outs. Defaults to False.
 
     """
@@ -78,7 +79,7 @@ class MatrixPortal:
         external_spi=None,
         bit_depth=2,
         alt_addr_pins=None,
-        alt_rgb_pins=None,
+        color_order="RGB",
         debug=False
     ):
 
@@ -89,7 +90,7 @@ class MatrixPortal:
             width=64,
             height=32,
             alt_addr_pins=alt_addr_pins,
-            alt_rgb_pins=alt_rgb_pins,
+            color_order=color_order,
             debug=debug,
         )
         self.display = self.graphics.display
