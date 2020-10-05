@@ -395,9 +395,6 @@ class Network:
             self.neo_status(STATUS_DATA_RECEIVED)  # green = got data
             print("Reply is OK!")
 
-        if self._debug:
-            print(response.text)
-
         return response
 
     def fetch_data(
@@ -417,6 +414,8 @@ class Network:
             try:
                 gc.collect()
                 json_out = response.json()
+                if self._debug:
+                    print(json_out)
                 gc.collect()
             except ValueError:  # failed to parse?
                 print("Couldn't parse json: ", response.text)
