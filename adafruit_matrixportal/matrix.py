@@ -45,11 +45,14 @@ class Matrix:
     :param int height: The height of the display in Pixels. Defaults to 32.
     :param int bit_depth: The number of bits per color channel. Defaults to 2.
     :param list alt_addr_pins: An alternate set of address pins to use. Defaults to None
+    :param list alt_rgb_pins: An alternate set of rgb pins to use. Defaults to None
 
     """
 
     # pylint: disable=too-few-public-methods,too-many-branches
-    def __init__(self, *, width=64, height=32, bit_depth=2, alt_addr_pins=None):
+    def __init__(
+        self, *, width=64, height=32, bit_depth=2, alt_addr_pins=None, alt_rgb_pins=None
+    ):
 
         if "Matrix Portal M4" in os.uname().machine:
             # MatrixPortal M4 Board
@@ -104,6 +107,10 @@ class Matrix:
             clock_pin = board.A4
             latch_pin = board.D10
             oe_pin = board.D9
+
+        # Alternate Address Pins
+        if alt_rgb_pins is not None:
+            rgb_pins = alt_rgb_pins
 
         # Alternate Address Pins
         if alt_addr_pins is not None:

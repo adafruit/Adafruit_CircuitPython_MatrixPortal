@@ -42,6 +42,7 @@ class Graphics:
     :param int height: The height of the display in Pixels. Defaults to 32.
     :param int bit_depth: The number of bits per color channel. Defaults to 2.
     :param list alt_addr_pins: An alternate set of address pins to use. Defaults to None
+    :param list alt_rgb_pins: An alternate set of rgb pins to use. Defaults to None
     :param debug: Turn on debug print outs. Defaults to False.
 
     """
@@ -55,12 +56,17 @@ class Graphics:
         height=32,
         bit_depth=2,
         alt_addr_pins=None,
+        alt_rgb_pins=None,
         debug=False
     ):
 
         self._debug = debug
         matrix = Matrix(
-            bit_depth=bit_depth, width=width, height=height, alt_addr_pins=alt_addr_pins
+            bit_depth=bit_depth,
+            width=width,
+            height=height,
+            alt_addr_pins=alt_addr_pins,
+            alt_rgb_pins=alt_rgb_pins,
         )
         self.display = matrix.display
 
