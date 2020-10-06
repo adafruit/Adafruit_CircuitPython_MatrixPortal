@@ -45,11 +45,24 @@ class Matrix:
     :param int height: The height of the display in Pixels. Defaults to 32.
     :param int bit_depth: The number of bits per color channel. Defaults to 2.
     :param list alt_addr_pins: An alternate set of address pins to use. Defaults to None
+    :param string color_order: A string containing the letter "R", "G", and "B" in the
+                               order you want. Defaults to "RGB"
 
     """
 
     # pylint: disable=too-few-public-methods,too-many-branches
-    def __init__(self, *, width=64, height=32, bit_depth=2, alt_addr_pins=None):
+    def __init__(
+        self, *, width=64, height=32, bit_depth=2, alt_addr_pins=None, color_order="RGB"
+    ):
+
+        if not isinstance(color_order, str):
+            raise ValueError("color_index should be a string")
+        color_order = color_order.lower()
+        red_index = color_order.find("r")
+        green_index = color_order.find("g")
+        blue_index = color_order.find("b")
+        if -1 in (red_index, green_index, blue_index):
+            raise ValueError("color_order should contain R, G, and B")
 
         if "Matrix Portal M4" in os.uname().machine:
             # MatrixPortal M4 Board
@@ -115,7 +128,14 @@ class Matrix:
                 width=width,
                 height=height,
                 bit_depth=bit_depth,
-                rgb_pins=rgb_pins,
+                rgb_pins=(
+                    rgb_pins[red_index],
+                    rgb_pins[green_index],
+                    rgb_pins[blue_index],
+                    rgb_pins[red_index + 3],
+                    rgb_pins[green_index + 3],
+                    rgb_pins[blue_index + 3],
+                ),
                 addr_pins=addr_pins,
                 clock_pin=clock_pin,
                 latch_pin=latch_pin,
