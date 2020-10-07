@@ -250,10 +250,7 @@ class MatrixPortal:
         if self._text[index]:
             color = self.html_color_convert(color)
             self._text_color[index] = color
-            if isinstance(self._text[index], Group):
-                self._text[index][0].color = color
-            else:
-                self._text[index].color = color
+            self._text[index].color = color
 
     def set_text(self, val, index=0):
         """Display text, with indexing into our list of text boxes.
@@ -273,17 +270,12 @@ class MatrixPortal:
         if self._text[index] is not None:
             print("Replacing text area with :", string)
         if len(string) > 0:
-            label = Label(self._text_font, text=string)
-            label.color = self._text_color[index]
-            if self._text_scale[index] > 1:
-                self._text[index] = Group(max_size=1, scale=self._text_scale[index])
-                self._text[index].x = self._text_position[index][0]
-                self._text[index].y = self._text_position[index][1]
-                self._text[index].append(label)
-            else:
-                label.x = self._text_position[index][0]
-                label.y = self._text_position[index][1]
-                self._text[index] = label
+            self._text[index] = Label(
+                self._text_font, text=string, scale=self._text_scale[index]
+            )
+            self._text[index].color = self._text_color[index]
+            self._text[index].x = self._text_position[index][0]
+            self._text[index].y = self._text_position[index][1]
         elif index_in_splash is not None:
             self._text[index] = None
 
