@@ -126,6 +126,7 @@ class MatrixPortal:
         self._text_scrolling = []
         self._scrolling_index = None
         self._text_font = terminalio.FONT
+        self._text_line_spacing = []
 
         gc.collect()
 
@@ -139,6 +140,7 @@ class MatrixPortal:
         text_maxlen=0,
         text_transform=None,
         scrolling=False,
+        line_spacing=1.25,
     ):
         """
         Add text labels with settings
@@ -183,6 +185,7 @@ class MatrixPortal:
         self._text_maxlen.append(text_maxlen)
         self._text_transform.append(text_transform)
         self._text_scrolling.append(scrolling)
+        self._text_line_spacing.append(line_spacing)
 
         if scrolling and self._scrolling_index is None:  # Not initialized yet
             self._scrolling_index = self._get_next_scrollable_text_index()
@@ -267,6 +270,7 @@ class MatrixPortal:
             self._text[index].color = self._text_color[index]
             self._text[index].x = self._text_position[index][0]
             self._text[index].y = self._text_position[index][1]
+            self._text[index].line_spacing = self._text_line_spacing[index]
         elif index_in_splash is not None:
             self._text[index] = None
 
