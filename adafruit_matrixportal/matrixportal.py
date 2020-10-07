@@ -329,14 +329,6 @@ class MatrixPortal:
 
         return self.network.get_io_data(feed_key)
 
-    def get_io_last_data(self, feed_key):
-        """Return last value from Adafruit IO Feed Data that matches the feed key
-
-        :param str feed_key: Name of feed key to receive data from.
-
-        """
-        return self.network.get_io_last_data(feed_key)
-
     def get_io_feed(self, feed_key, detailed=False):
         """Return the Adafruit IO Feed that matches the feed key
 
