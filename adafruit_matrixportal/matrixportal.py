@@ -28,6 +28,7 @@ Implementation Notes
 import gc
 from time import sleep
 import terminalio
+from displayio import Group
 from adafruit_bitmap_font import bitmap_font
 from adafruit_display_text.label import Label
 from adafruit_matrixportal.network import Network
@@ -124,6 +125,7 @@ class MatrixPortal:
         self._text_maxlen = []
         self._text_transform = []
         self._text_scrolling = []
+        self._text_scale = []
         self._scrolling_index = None
         self._text_font = terminalio.FONT
 
@@ -138,6 +140,7 @@ class MatrixPortal:
         text_wrap=False,
         text_maxlen=0,
         text_transform=None,
+        text_scale=1,
         scrolling=False,
     ):
         """
@@ -153,6 +156,7 @@ class MatrixPortal:
                           ``False``, no wrapping.
         :param text_maxlen: The max length of the text for text wrapping. Defaults to 0.
         :param text_transform: A function that will be called on the text before display
+        :param int text_scale: The factor to scale the default size of the text by
         :param bool scrolling: If true, text is placed offscreen and the scroll() function is used
                                to scroll text on a pixel-by-pixel basis. Multiple text labels with
                                the scrolling set to True will be cycled through.
@@ -169,6 +173,9 @@ class MatrixPortal:
             text_maxlen = 0
         if not text_transform:
             text_transform = None
+        if not isinstance(text_scale, (int, float)) or text_scale < 1:
+            text_scale = 1
+        text_scale = round(text_scale)
         if scrolling:
             text_position = (self.display.width, text_position[1])
 
@@ -182,6 +189,7 @@ class MatrixPortal:
         self._text_wrap.append(text_wrap)
         self._text_maxlen.append(text_maxlen)
         self._text_transform.append(text_transform)
+        self._text_scale.append(text_scale)
         self._text_scrolling.append(scrolling)
 
         if scrolling and self._scrolling_index is None:  # Not initialized yet
@@ -242,7 +250,10 @@ class MatrixPortal:
         if self._text[index]:
             color = self.html_color_convert(color)
             self._text_color[index] = color
-            self._text[index].color = color
+            if isinstance(self._text[index], Group):
+                self._text[index][0].color = color
+            else:
+                self._text[index].color = color
 
     def set_text(self, val, index=0):
         """Display text, with indexing into our list of text boxes.
@@ -261,12 +272,18 @@ class MatrixPortal:
         index_in_splash = None
         if self._text[index] is not None:
             print("Replacing text area with :", string)
-            index_in_splash = self.splash.index(self._text[index])
         if len(string) > 0:
-            self._text[index] = Label(self._text_font, text=string)
-            self._text[index].color = self._text_color[index]
-            self._text[index].x = self._text_position[index][0]
-            self._text[index].y = self._text_position[index][1]
+            label = Label(self._text_font, text=string)
+            label.color = self._text_color[index]
+            if self._text_scale[index] > 1:
+                self._text[index] = Group(max_size=1, scale=self._text_scale[index])
+                self._text[index].x = self._text_position[index][0]
+                self._text[index].y = self._text_position[index][1]
+                self._text[index].append(label)
+            else:
+                label.x = self._text_position[index][0]
+                label.y = self._text_position[index][1]
+                self._text[index] = label
         elif index_in_splash is not None:
             self._text[index] = None
 
@@ -314,6 +331,14 @@ class MatrixPortal:
         """
 
         return self.network.get_io_data(feed_key)
+
+    def get_io_last_data(self, feed_key):
+        """Return last value from Adafruit IO Feed Data that matches the feed key
+
+        :param str feed_key: Name of feed key to receive data from.
+
+        """
+        return self.network.get_io_last_data(feed_key)
 
     def get_io_feed(self, feed_key, detailed=False):
         """Return the Adafruit IO Feed that matches the feed key
