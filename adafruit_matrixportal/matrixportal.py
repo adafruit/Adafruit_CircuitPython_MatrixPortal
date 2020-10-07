@@ -28,7 +28,6 @@ Implementation Notes
 import gc
 from time import sleep
 import terminalio
-from displayio import Group
 from adafruit_bitmap_font import bitmap_font
 from adafruit_display_text.label import Label
 from adafruit_matrixportal.network import Network
@@ -267,8 +266,14 @@ class MatrixPortal:
             string = string[: self._text_maxlen[index]]
         print("text index", self._text[index])
         index_in_splash = None
+
         if self._text[index] is not None:
-            print("Replacing text area with :", string)
+            if self._debug:
+                print("Replacing text area with :", string)
+            index_in_splash = self.splash.index(self._text[index])
+        elif self._debug:
+            print("Creating text area with :", string)
+
         if len(string) > 0:
             self._text[index] = Label(
                 self._text_font, text=string, scale=self._text_scale[index]
