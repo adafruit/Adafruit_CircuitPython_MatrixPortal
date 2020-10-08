@@ -17,7 +17,8 @@ Introduction
     :target: https://github.com/psf/black
     :alt: Code Style: Black
 
-Helper library for the Adafruit RGB Matrix Shield + Metro M4 Airlift Lite.
+CircuitPython helper for Adafruit MatrixPortal M4, Adafruit RGB Matrix Shield + Metro M4 Airlift Lite,
+and Adafruit RGB Matrix FeatherWings
 
 
 Dependencies

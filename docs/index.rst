@@ -23,13 +23,20 @@ Table of Contents
 .. toctree::
     :caption: Tutorials
 
+    * Adafruit MatrixPortal M4 <https://learn.adafruit.com/adafruit-matrixportal-m4>
+
 .. toctree::
     :caption: Related Products
 
-    * Adafruit Matrix Portal <https://www.adafruit.com/product/4745>
+    * Adafruit MatrixPortal M4 <https://www.adafruit.com/product/4745>
     * Adafruit Metro M4 Express AirLift <https://www.adafruit.com/product/4000>
     * Adafruit RGB Matrix Shield <https://www.adafruit.com/product/2601>
+    * Adafruit RGB Matrix Featherwing for M0/M4 <https://www.adafruit.com/product/3036>
+    * Adafruit RGB Matrix FeatherWing for nrf52840 <https://www.adafruit.com/product/4702>
     * 64x32 RGB LED Matrix <https://www.adafruit.com/product/2278>
+    * 16x32 RGB LED Matrix <https://www.adafruit.com/product/420>
+    * 64x64 2.5mm pitch RGB LED Matrix <https://www.adafruit.com/product/3649>
+    * 64x64 3mm pitch RGB LED Matrix <https://www.adafruit.com/product/4732>
 
 .. toctree::
     :caption: Other Links

@@ -124,6 +124,7 @@ class MatrixPortal:
         self._text_maxlen = []
         self._text_transform = []
         self._text_scrolling = []
+        self._text_scale = []
         self._scrolling_index = None
         self._text_font = terminalio.FONT
         self._text_line_spacing = []
@@ -139,6 +140,7 @@ class MatrixPortal:
         text_wrap=False,
         text_maxlen=0,
         text_transform=None,
+        text_scale=1,
         scrolling=False,
         line_spacing=1.25,
     ):
@@ -155,6 +157,7 @@ class MatrixPortal:
                           ``False``, no wrapping.
         :param text_maxlen: The max length of the text for text wrapping. Defaults to 0.
         :param text_transform: A function that will be called on the text before display
+        :param int text_scale: The factor to scale the default size of the text by
         :param bool scrolling: If true, text is placed offscreen and the scroll() function is used
                                to scroll text on a pixel-by-pixel basis. Multiple text labels with
                                the scrolling set to True will be cycled through.
@@ -171,6 +174,9 @@ class MatrixPortal:
             text_maxlen = 0
         if not text_transform:
             text_transform = None
+        if not isinstance(text_scale, (int, float)) or text_scale < 1:
+            text_scale = 1
+        text_scale = round(text_scale)
         if scrolling:
             text_position = (self.display.width, text_position[1])
 
@@ -184,6 +190,7 @@ class MatrixPortal:
         self._text_wrap.append(text_wrap)
         self._text_maxlen.append(text_maxlen)
         self._text_transform.append(text_transform)
+        self._text_scale.append(text_scale)
         self._text_scrolling.append(scrolling)
         self._text_line_spacing.append(line_spacing)
 
@@ -262,11 +269,18 @@ class MatrixPortal:
             string = string[: self._text_maxlen[index]]
         print("text index", self._text[index])
         index_in_splash = None
+
         if self._text[index] is not None:
-            print("Replacing text area with :", string)
+            if self._debug:
+                print("Replacing text area with :", string)
             index_in_splash = self.splash.index(self._text[index])
+        elif self._debug:
+            print("Creating text area with :", string)
+
         if len(string) > 0:
-            self._text[index] = Label(self._text_font, text=string)
+            self._text[index] = Label(
+                self._text_font, text=string, scale=self._text_scale[index]
+            )
             self._text[index].color = self._text_color[index]
             self._text[index].x = self._text_position[index][0]
             self._text[index].y = self._text_position[index][1]
