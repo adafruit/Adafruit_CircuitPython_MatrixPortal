@@ -163,11 +163,10 @@ class MatrixPortal:
                                the scrolling set to True will be cycled through.
 
         """
-        if text_font:
-            if text_font is terminalio.FONT:
-                self._text_font.append(text_font)
-            else:
-                self._text_font.append(bitmap_font.load_font(text_font))
+        if text_font is terminalio.FONT:
+            self._text_font.append(text_font)
+        else:
+            self._text_font.append(bitmap_font.load_font(text_font))
         if not text_wrap:
             text_wrap = 0
         if not text_maxlen:
