@@ -126,7 +126,7 @@ class MatrixPortal:
         self._text_scrolling = []
         self._text_scale = []
         self._scrolling_index = None
-        self._text_font = terminalio.FONT
+        self._text_font = []
         self._text_line_spacing = []
 
         gc.collect()
@@ -135,7 +135,7 @@ class MatrixPortal:
     def add_text(
         self,
         text_position=None,
-        text_font=None,
+        text_font=terminalio.FONT,
         text_color=0x808080,
         text_wrap=False,
         text_maxlen=0,
@@ -163,11 +163,10 @@ class MatrixPortal:
                                the scrolling set to True will be cycled through.
 
         """
-        if text_font:
-            if text_font is terminalio.FONT:
-                self._text_font = text_font
-            else:
-                self._text_font = bitmap_font.load_font(text_font)
+        if text_font is terminalio.FONT:
+            self._text_font.append(text_font)
+        else:
+            self._text_font.append(bitmap_font.load_font(text_font))
         if not text_wrap:
             text_wrap = 0
         if not text_maxlen:
@@ -228,7 +227,7 @@ class MatrixPortal:
         """
         self.graphics.set_background(file_or_color, position)
 
-    def preload_font(self, glyphs=None):
+    def preload_font(self, glyphs=None, index=0):
         # pylint: disable=line-too-long
         """Preload font.
 
@@ -239,8 +238,8 @@ class MatrixPortal:
         if not glyphs:
             glyphs = b"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-!,. \"'?!"
         print("Preloading font glyphs:", glyphs)
-        if self._text_font is not terminalio.FONT:
-            self._text_font.load_glyphs(glyphs)
+        if self._text_font[index] is not terminalio.FONT:
+            self._text_font[index].load_glyphs(glyphs)
 
     def set_text_color(self, color, index=0):
         """Update the text color, with indexing into our list of text boxes.
@@ -279,7 +278,7 @@ class MatrixPortal:
 
         if len(string) > 0:
             self._text[index] = Label(
-                self._text_font, text=string, scale=self._text_scale[index]
+                self._text_font[index], text=string, scale=self._text_scale[index]
             )
             self._text[index].color = self._text_color[index]
             self._text[index].x = self._text_position[index][0]
@@ -373,12 +372,18 @@ class MatrixPortal:
         """
         if self._scrolling_index is None:  # Not initialized yet
             return
-
-        self._text[self._scrolling_index].x = self.graphics.display.width
-        line_width = self._text[self._scrolling_index].bounding_box[2]
-        for _ in range(self.graphics.display.width + line_width + 1):
-            self.scroll()
-            sleep(frame_delay)
+        if self._text[self._scrolling_index] is not None:
+            self._text[self._scrolling_index].x = self.graphics.display.width
+            line_width = self._text[self._scrolling_index].bounding_box[2]
+            for _ in range(self.graphics.display.width + line_width + 1):
+                self.scroll()
+                sleep(frame_delay)
+        else:
+            raise RuntimeError(
+                "Please assign text to the label with index {} before scrolling".format(
+                    self._scrolling_index
+                )
+            )
 
     def fetch(self, refresh_url=None, timeout=10):
         """Fetch data from the url we initialized with, perfom any parsing,
