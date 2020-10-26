@@ -361,7 +361,7 @@ class MatrixPortal:
             return
 
         self._text[self._scrolling_index].x = self._text[self._scrolling_index].x - 1
-        line_width = self._text[self._scrolling_index].bounding_box[2]
+        line_width = self._text[self._scrolling_index].bounding_box[2] * self._text_scale[self._scrolling_index]
         if self._text[self._scrolling_index].x < -line_width:
             # Find the next line
             self._scrolling_index = self._get_next_scrollable_text_index()
@@ -376,7 +376,7 @@ class MatrixPortal:
             return
         if self._text[self._scrolling_index] is not None:
             self._text[self._scrolling_index].x = self.graphics.display.width
-            line_width = self._text[self._scrolling_index].bounding_box[2]
+            line_width = self._text[self._scrolling_index].bounding_box[2] * self._text_scale[self._scrolling_index]
             for _ in range(self.graphics.display.width + line_width + 1):
                 self.scroll()
                 sleep(frame_delay)
