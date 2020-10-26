@@ -80,15 +80,17 @@ class MatrixPortal:
         bit_depth=2,
         alt_addr_pins=None,
         color_order="RGB",
-        debug=False
+        debug=False,
+        width=64,
+        height=32,
     ):
 
         self._debug = debug
         self.graphics = Graphics(
             default_bg=default_bg,
             bit_depth=bit_depth,
-            width=64,
-            height=32,
+            width=width,
+            height=height,
             alt_addr_pins=alt_addr_pins,
             color_order=color_order,
             debug=debug,
