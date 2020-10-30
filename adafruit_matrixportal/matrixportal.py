@@ -179,7 +179,11 @@ class MatrixPortal:
             text_scale = 1
         text_scale = round(text_scale)
         if scrolling:
-            text_position = (self.display.width, text_position[1])
+            if text_position is None:
+                # Center text if position not specified
+                text_position = (self.display.width, self.display.height // 2 - 1)
+            else:
+                text_position = (self.display.width, text_position[1])
 
         gc.collect()
 
