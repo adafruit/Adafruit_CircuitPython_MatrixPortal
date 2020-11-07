@@ -39,7 +39,7 @@ Usage Example
     import time
     import board
     import terminalio
-    from adafruit_matrixportal import MatrixPortal
+    from adafruit_matrixportal.matrixportal import MatrixPortal
 
     # You can display in 'GBP', 'EUR' or 'USD'
     CURRENCY = "USD"
