@@ -259,7 +259,9 @@ class MatrixPortal:
             self._text_color[index] = color
             self._text[index].color = color
         else:
-            raise IndexError(f"index {index} is out of bounds. Please call add_text() and set_text() first.")
+            raise IndexError(
+                f"index {index} is out of bounds. Please call add_text() and set_text() first."
+            )
 
     def set_text(self, val, index=0):
         """Display text, with indexing into our list of text boxes.
