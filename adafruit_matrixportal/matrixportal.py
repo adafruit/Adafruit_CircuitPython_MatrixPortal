@@ -254,9 +254,9 @@ class MatrixPortal:
         :param index: Defaults to 0.
 
         """
+        self._text_color[index] = color
         if self._text[index]:
             color = self.html_color_convert(color)
-            self._text_color[index] = color
             self._text[index].color = color
 
     def set_text(self, val, index=0):
