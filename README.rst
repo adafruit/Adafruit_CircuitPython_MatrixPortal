@@ -75,7 +75,7 @@ Usage Example
 
             # Scroll it
             matrixportal.scroll_text(SCROLL_DELAY)
-        
+
 Contributing
 ============
 
