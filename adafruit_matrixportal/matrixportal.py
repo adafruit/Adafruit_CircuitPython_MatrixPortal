@@ -254,10 +254,10 @@ class MatrixPortal:
         :param index: Defaults to 0.
 
         """
-        if self._text[index]:
-            color = self.html_color_convert(color)
-            self._text_color[index] = color
-            self._text[index].color = color
+        if 0 <= index < len(self._text_color):
+            self._text_color[index] = self.html_color_convert(color)
+            if self._text[index] is not None:
+                self._text[index].color = self._text_color[index]
         else:
             raise IndexError(
                 "index {} is out of bounds. Please call add_text() and set_text() first.".format(
