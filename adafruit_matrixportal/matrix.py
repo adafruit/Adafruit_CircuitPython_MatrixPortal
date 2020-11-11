@@ -47,12 +47,21 @@ class Matrix:
     :param list alt_addr_pins: An alternate set of address pins to use. Defaults to None
     :param string color_order: A string containing the letter "R", "G", and "B" in the
                                order you want. Defaults to "RGB"
+    :param int rotation: The rotation of the display in degrees clockwise. Must be in
+                               90 degree increments (0, 90, 180, 270)
 
     """
 
     # pylint: disable=too-few-public-methods,too-many-branches
     def __init__(
-        self, *, width=64, height=32, bit_depth=2, alt_addr_pins=None, color_order="RGB"
+        self,
+        *,
+        width=64,
+        height=32,
+        bit_depth=2,
+        alt_addr_pins=None,
+        color_order="RGB",
+        rotation=0
     ):
 
         if not isinstance(color_order, str):
@@ -141,6 +150,6 @@ class Matrix:
                 latch_pin=latch_pin,
                 output_enable_pin=oe_pin,
             )
-            self.display = framebufferio.FramebufferDisplay(matrix)
+            self.display = framebufferio.FramebufferDisplay(matrix, rotation)
         except ValueError:
             raise RuntimeError("Failed to initialize RGB Matrix") from ValueError
