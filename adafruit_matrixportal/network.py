@@ -178,7 +178,7 @@ class Network:
             ) from KeyError
 
         if location is None:        
-            location = secrets.get("timezone")
+            location =secrets.get("timezone")
         if location:
             print("Getting time for timezone", location)
             api_url = (TIME_SERVICE + "&tz=%s") % (aio_username, aio_key, location)
