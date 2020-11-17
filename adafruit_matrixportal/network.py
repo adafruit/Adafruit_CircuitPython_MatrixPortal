@@ -177,8 +177,8 @@ class Network:
                 "\n\nOur time service requires a login/password to rate-limit. Please register for a free adafruit.io account and place the user/key in your secrets file under 'aio_username' and 'aio_key'"  # pylint: disable=line-too-long
             ) from KeyError
 
-        if location is None:        
-            location =secrets.get("timezone")
+        if location is None:
+            location = secrets.get("timezone")
         if location:
             print("Getting time for timezone", location)
             api_url = (TIME_SERVICE + "&tz=%s") % (aio_username, aio_key, location)
