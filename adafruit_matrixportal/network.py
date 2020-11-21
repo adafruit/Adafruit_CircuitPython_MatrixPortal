@@ -323,7 +323,7 @@ class Network:
                 "Adafruit IO secrets are kept in secrets.py, please add them there!\n\n"
             ) from KeyError
 
-        return IO_HTTP(aio_username, aio_key, self._wifi.manager(secrets))
+        return IO_HTTP(aio_username, aio_key, requests)
 
     def push_to_io(self, feed_key, data):
         """Push data to an adafruit.io feed
