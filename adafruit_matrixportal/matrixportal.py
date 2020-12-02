@@ -201,7 +201,8 @@ class MatrixPortal:
 
         if scrolling and self._scrolling_index is None:  # Not initialized yet
             self._scrolling_index = self._get_next_scrollable_text_index()
-        return len(self._text)-1
+        return len(self._text) - 1
+
     # pylint: enable=too-many-arguments
 
     @staticmethod
