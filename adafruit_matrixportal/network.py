@@ -46,7 +46,7 @@ the secrets dictionary must contain 'ssid' and 'password' at a minimum"""
     )
     raise
 
-__version__ = "1.9.4"
+__version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_MatrixPortal.git"
 
 # pylint: disable=line-too-long
@@ -295,24 +295,15 @@ class Network:
         self._wifi.neo_status(STATUS_CONNECTING)
         while not self._wifi.esp.is_connected:
             # secrets dictionary must contain 'ssid' and 'password' at a minimum
-            if "ssid" in secrets:
-                if isinstance(secrets["ssid"], (list, tuple)):
-                    print(
-                        'secrets["ssid"] is a list or a tuple.  I assume you know what you\'re doing'
-                    )
-                else:
-                    print("Connecting to AP", secrets["ssid"])
-                    if (
-                        secrets["ssid"] == "CHANGE ME"
-                        or secrets["password"] == "CHANGE ME"
-                    ):
-                        change_me = "\n" + "*" * 45
-                        change_me += "\nPlease update the 'secrets.py' file on your\n"
-                        change_me += "CIRCUITPY drive to include your local WiFi\n"
-                        change_me += "access point SSID name in 'ssid' and SSID\n"
-                        change_me += "password in 'password'. Then save to reload!\n"
-                        change_me += "*" * 45
-                        raise OSError(change_me)
+            print("Connecting to AP", secrets["ssid"])
+            if secrets["ssid"] == "CHANGE ME" or secrets["password"] == "CHANGE ME":
+                change_me = "\n" + "*" * 45
+                change_me += "\nPlease update the 'secrets.py' file on your\n"
+                change_me += "CIRCUITPY drive to include your local WiFi\n"
+                change_me += "access point SSID name in 'ssid' and SSID\n"
+                change_me += "password in 'password'. Then save to reload!\n"
+                change_me += "*" * 45
+                raise OSError(change_me)
             self._wifi.neo_status(STATUS_NO_CONNECTION)  # red = not connected
             try:
                 self._wifi.esp.connect(secrets)
