@@ -118,7 +118,7 @@ class MatrixPortal(PortalBase):
 
         gc.collect()
 
-    # pylint: disable=too-many-arguments
+    # pylint: disable=too-many-arguments, arguments-differ
     def add_text(
         self,
         text_position=None,
@@ -181,7 +181,7 @@ class MatrixPortal(PortalBase):
 
         return index
 
-    # pylint: enable=too-many-arguments
+    # pylint: enable=too-many-arguments, arguments-differ
 
     def set_background(self, file_or_color, position=None):
         """The background image to a bitmap file.
