@@ -1,8 +1,5 @@
 
 
-.. automodule:: adafruit_matrixportal.fakerequests
-   :members:
-
 .. automodule:: adafruit_matrixportal.matrix
    :members:
 
