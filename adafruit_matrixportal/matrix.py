@@ -5,7 +5,7 @@
 `adafruit_matrixportal.matrix`
 ================================================================================
 
-Helper library for the Adafruit RGB Matrix Shield + Metro M4 Airlift Lite.
+Helper library for the MatrixPortal M4 or Adafruit RGB Matrix Shield + Metro M4 Airlift Lite.
 
 * Author(s): Melissa LeBlanc-Williams
 
