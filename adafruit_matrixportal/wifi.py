@@ -5,7 +5,7 @@
 `adafruit_matrixportal.wifi`
 ================================================================================
 
-Helper library for the Adafruit RGB Matrix Shield + Metro M4 Airlift Lite.
+Helper library for the MatrixPortal M4 or Adafruit RGB Matrix Shield + Metro M4 Airlift Lite.
 
 * Author(s): Melissa LeBlanc-Williams
 
@@ -14,6 +14,7 @@ Implementation Notes
 
 **Hardware:**
 
+* `Adafruit MatrixPortal M4 <https://www.adafruit.com/product/4745>`_
 * `Adafruit Metro M4 Express AirLift <https://www.adafruit.com/product/4000>`_
 * `Adafruit RGB Matrix Shield <https://www.adafruit.com/product/2601>`_
 * `64x32 RGB LED Matrix <https://www.adafruit.com/product/2278>`_
@@ -31,6 +32,8 @@ import busio
 from digitalio import DigitalInOut
 import neopixel
 from adafruit_esp32spi import adafruit_esp32spi, adafruit_esp32spi_wifimanager
+import adafruit_esp32spi.adafruit_esp32spi_socket as socket
+import adafruit_requests as requests
 
 __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_MatrixPortal.git"
@@ -54,6 +57,7 @@ class WiFi:
         else:
             self.neopix = None
         self.neo_status(0)
+        self.requests = None
 
         if esp:  # If there was a passed ESP Object
             self.esp = esp
@@ -72,9 +76,17 @@ class WiFi:
                 spi, esp32_cs, esp32_ready, esp32_reset, esp32_gpio0
             )
 
+        requests.set_socket(socket, self.esp)
         self._manager = None
 
         gc.collect()
+
+    def connect(self, ssid, password):
+        """
+        Connect to WiFi using the settings found in secrets.py
+        """
+        self.esp.connect({"ssid": ssid, "password": password})
+        self.requests = requests
 
     def neo_status(self, value):
         """The status NeoPixel.
@@ -92,3 +104,13 @@ class WiFi:
                 self.esp, secrets, None
             )
         return self._manager
+
+    @property
+    def is_connected(self):
+        """Return whether we are connected."""
+        return self.esp.is_connected
+
+    @property
+    def enabled(self):
+        """Not currently disablable on the ESP32 Coprocessor"""
+        return True
