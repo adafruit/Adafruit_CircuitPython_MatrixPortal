@@ -61,6 +61,12 @@ class MatrixPortal(PortalBase):
     :param string color_order: A string containing the letter "R", "G", and "B" in the
                                order you want. Defaults to "RGB"
     :param debug: Turn on debug print outs. Defaults to False.
+    :param int width: The total width of the display(s) in Pixels. Defaults to 64.
+    :param int height: The total height of the display(s) in Pixels. Defaults to 32.
+    :param bool Serpentine: Used when panels are arranged in a serpentine pattern rather
+                            than a Z-pattern. Defaults to True.
+    :param int tiles_rows: Used to indicate the number of rows the panels are arranged in.
+                           Defaults to 1.
 
     """
 
@@ -83,6 +89,8 @@ class MatrixPortal(PortalBase):
         debug=False,
         width=64,
         height=32,
+        serpentine=True,
+        tile_rows=1,
     ):
 
         graphics = Graphics(
@@ -92,6 +100,8 @@ class MatrixPortal(PortalBase):
             height=height,
             alt_addr_pins=alt_addr_pins,
             color_order=color_order,
+            serpentine=serpentine,
+            tile_rows=tile_rows,
             debug=debug,
         )
 
