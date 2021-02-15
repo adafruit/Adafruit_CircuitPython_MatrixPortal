@@ -152,9 +152,10 @@ class MatrixPortal(PortalBase):
                               example.
         :param text_color: The color of the text, in 0xRRGGBB format. Can be a list of colors for
                            when there's multiple texts. Defaults to ``None``.
-        :param text_wrap: Whether or not to wrap text (for long text data chunks). Defaults to
-                          ``False``, no wrapping.
-        :param text_maxlen: The max length of the text for text wrapping. Defaults to 0.
+        :param text_wrap: When non-zero, the maximum number of characters on each line before text
+                          is wrapped. (for long text data chunks). Defaults to 0, no wrapping.
+        :param text_maxlen: The max length of the text. If non-zero, it will be truncated to this
+                            length. Defaults to 0.
         :param text_transform: A function that will be called on the text before display
         :param int text_scale: The factor to scale the default size of the text by
         :param bool scrolling: If true, text is placed offscreen and the scroll() function is used
