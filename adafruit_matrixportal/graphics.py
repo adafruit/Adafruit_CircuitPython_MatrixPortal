@@ -55,26 +55,11 @@ class Graphics(GraphicsBase):
     # pylint: disable=too-few-public-methods
     def __init__(
         self,
-        *,
-        default_bg=0x000000,
-        width=64,
-        height=32,
-        bit_depth=2,
-        alt_addr_pins=None,
-        color_order="RGB",
-        serpentine=True,
-        tile_rows=1,
-        debug=False
+        **kwargs,
     ):
+        default_bg = kwargs.pop("default_bg")
+        debug = kwargs.pop("debug")
 
-        matrix = Matrix(
-            bit_depth=bit_depth,
-            width=width,
-            height=height,
-            alt_addr_pins=alt_addr_pins,
-            color_order=color_order,
-            serpentine=serpentine,
-            tile_rows=tile_rows,
-        )
+        matrix = Matrix(**kwargs)
 
         super().__init__(matrix.display, default_bg=default_bg, debug=debug)

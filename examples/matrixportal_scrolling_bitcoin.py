@@ -30,7 +30,9 @@ def text_transform(val):
 cwd = ("/" + __file__).rsplit("/", 1)[0]
 
 matrixportal = MatrixPortal(
-    url=DATA_SOURCE, json_path=DATA_LOCATION, status_neopixel=board.NEOPIXEL,
+    url=DATA_SOURCE,
+    json_path=DATA_LOCATION,
+    status_neopixel=board.NEOPIXEL,
 )
 
 matrixportal.add_text(
