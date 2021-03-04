@@ -91,6 +91,7 @@ class MatrixPortal(PortalBase):
         height=32,
         serpentine=True,
         tile_rows=1,
+        rotation=0,
     ):
 
         graphics = Graphics(
@@ -102,6 +103,7 @@ class MatrixPortal(PortalBase):
             color_order=color_order,
             serpentine=serpentine,
             tile_rows=tile_rows,
+            rotation=rotation,
             debug=debug,
         )
 
