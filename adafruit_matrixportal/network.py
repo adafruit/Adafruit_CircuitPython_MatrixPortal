@@ -60,7 +60,9 @@ class Network(NetworkBase):
         wifi = WiFi(status_neopixel=status_neopixel, esp=esp, external_spi=external_spi)
 
         super().__init__(
-            wifi, extract_values=extract_values, debug=debug,
+            wifi,
+            extract_values=extract_values,
+            debug=debug,
         )
 
         gc.collect()
