@@ -65,7 +65,8 @@ class Matrix:
         alt_addr_pins=None,
         color_order="RGB",
         serpentine=True,
-        tile_rows=1
+        tile_rows=1,
+        rotation=0,
     ):
 
         panel_height = height // tile_rows
@@ -177,7 +178,7 @@ class Matrix:
                     latch_pin=latch_pin,
                     output_enable_pin=oe_pin,
                 )
-            self.display = framebufferio.FramebufferDisplay(matrix)
+            self.display = framebufferio.FramebufferDisplay(matrix, rotation=rotation)
         except TypeError:
             if tile_rows > 1:
                 raise RuntimeError(
