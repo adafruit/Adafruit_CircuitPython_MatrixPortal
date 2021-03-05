@@ -48,19 +48,15 @@ class Network(NetworkBase):
 
     """
 
-    def __init__(
-        self,
-        *,
-        status_neopixel=None,
-        esp=None,
-        external_spi=None,
-        extract_values=True,
-        debug=False,
-    ):
-        wifi = WiFi(status_neopixel=status_neopixel, esp=esp, external_spi=external_spi)
+    def __init__(self, **kwargs):
+        extract_values = kwargs.pop("extract_values")
+        debug = kwargs.pop("debug")
+        wifi = WiFi(**kwargs)
 
         super().__init__(
-            wifi, extract_values=extract_values, debug=debug,
+            wifi,
+            extract_values=extract_values,
+            debug=debug,
         )
 
         gc.collect()
