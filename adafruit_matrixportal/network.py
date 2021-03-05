@@ -49,7 +49,9 @@ class Network(NetworkBase):
     """
 
     def __init__(self, **kwargs):
-        extract_values = kwargs.pop("extract_values")
+        extract_values = True
+        if "extract_values" in kwargs:
+            extract_values = kwargs.pop("extract_values")
         debug = kwargs.pop("debug")
         wifi = WiFi(**kwargs)
 
