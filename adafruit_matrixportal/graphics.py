@@ -57,8 +57,12 @@ class Graphics(GraphicsBase):
         self,
         **kwargs,
     ):
-        default_bg = kwargs.pop("default_bg")
-        debug = kwargs.pop("debug")
+        default_bg = 0x000000
+        debug = False
+        if "default_bg" in kwargs:
+            default_bg = kwargs.pop("default_bg")
+        if "debug" in kwargs:
+            debug = kwargs.pop("debug")
 
         matrix = Matrix(**kwargs)
 
