@@ -77,7 +77,7 @@ class WiFi:
             )
 
         requests.set_socket(socket, self.esp)
-        if esp.is_connected:
+        if self.esp.is_connected:
             self.requests = requests
         self._manager = None
 
