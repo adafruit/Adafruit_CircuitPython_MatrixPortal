@@ -27,8 +27,9 @@ Implementation Notes
 """
 
 import gc
+import neopixel
 from adafruit_portalbase.network import NetworkBase
-from adafruit_matrixportal.wifi import WiFi
+from adafruit_portalbase.wifi_coprocessor import WiFi
 
 __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_MatrixPortal.git"
@@ -55,6 +56,13 @@ class Network(NetworkBase):
             extract_values = kwargs.pop("extract_values")
         if "debug" in kwargs:
             debug = kwargs.pop("debug")
+
+        if "status_neopixel" in kwargs:
+            status_neopixel = kwargs.pop("status_neopixel")
+            status_led = neopixel.NeoPixel(status_neopixel, 1, brightness=0.2)
+        else:
+            status_led = None
+        kwargs["status_led"] = status_led
         wifi = WiFi(**kwargs)
 
         super().__init__(
