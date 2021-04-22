@@ -11,6 +11,3 @@
 
 .. automodule:: adafruit_matrixportal.network
    :members:
-
-.. automodule:: adafruit_matrixportal.wifi
-   :members:
