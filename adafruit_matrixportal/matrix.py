@@ -107,6 +107,24 @@ class Matrix:
                     addr_pins.append(board.D9)
                 rgb_pins = [board.D6, board.A5, board.A1, board.A0, board.A4, board.D11]
                 clock_pin = board.D12
+                latch_pin = board.RX
+                oe_pin = board.TX
+            elif "rp2040" in os.uname().sysname:
+                # rp2040 Style Feather
+                addr_pins = [board.D25, board.D24, board.A3]
+                if panel_height > 16:
+                    addr_pins.append(board.A2)
+                rgb_pins = [
+                    board.D6,
+                    board.D5,
+                    board.D9,
+                    board.D11,
+                    board.D10,
+                    board.D12,
+                ]
+                clock_pin = board.D13
+                latch_pin = board.D0
+                oe_pin = board.D1
             else:
                 addr_pins = [board.A5, board.A4, board.A3]
                 if panel_height > 16:
@@ -120,8 +138,8 @@ class Matrix:
                     board.D12,
                 ]
                 clock_pin = board.D13
-            latch_pin = board.D0
-            oe_pin = board.D1
+                latch_pin = board.D0
+                oe_pin = board.D1
         else:
             # Metro/Grand Central Style Board
             if alt_addr_pins is None and height <= 16:
