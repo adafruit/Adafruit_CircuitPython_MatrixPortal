@@ -57,8 +57,8 @@ class Network(NetworkBase):
         if "debug" in kwargs:
             debug = kwargs.pop("debug")
 
-        if "status_neopixel" in kwargs:
-            status_neopixel = kwargs.pop("status_neopixel")
+        status_neopixel = kwargs.pop("status_neopixel", None)
+        if status_neopixel:
             status_led = neopixel.NeoPixel(status_neopixel, 1, brightness=0.2)
         else:
             status_led = None
