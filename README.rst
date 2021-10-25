@@ -68,6 +68,11 @@ Usage Example
             # Scroll it
             matrixportal.scroll_text(SCROLL_DELAY)
 
+Documentation
+=============
+
+API documentation for this library can be found on `Read the Docs <https://circuitpython.readthedocs.io/projects/matrixportal/en/latest/>`_.
+
 Contributing
 ============
 
