@@ -27,8 +27,8 @@ setup(
     use_scm_version=True,
     setup_requires=["setuptools_scm"],
     description="CircuitPython helper for Adafruit MatrixPortal M4, Adafruit"
-    "RGB Matrix Shield + Metro M4 Airlift Lite, and Adafruit RGB Matrix"
-    "FeatherWings",
+    " RGB Matrix Shield + Metro M4 Airlift Lite, and Adafruit RGB Matrix"
+    " FeatherWings",
     long_description=long_description,
     long_description_content_type="text/x-rst",
     # The project's main homepage.
