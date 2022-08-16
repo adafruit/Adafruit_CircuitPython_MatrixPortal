@@ -33,7 +33,7 @@ from adafruit_portalbase import PortalBase
 from adafruit_matrixportal.network import Network
 from adafruit_matrixportal.graphics import Graphics
 
-__version__ = "0.0.0-auto.0"
+__version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_MatrixPortal.git"
 
 
