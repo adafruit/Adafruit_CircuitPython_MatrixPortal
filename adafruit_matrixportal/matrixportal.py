@@ -144,6 +144,7 @@ class MatrixPortal(PortalBase):
         line_spacing=1.25,
         text_anchor_point=(0, 0.5),
         is_data=True,
+        text=None,
     ):
         """
         Add text labels with settings
@@ -166,6 +167,11 @@ class MatrixPortal(PortalBase):
         :param (float, float) text_anchor_point: Values between 0 and 1 to indicate where the text
                                                  position is relative to the label
         :param bool is_data: If True, fetch will attempt to update the label
+        :param str text: If this is provided, it will set the initial text of the label.
+
+        :return: Index of the new text label.
+        :rtype: int
+
         """
         if scrolling:
             if text_position is None:
@@ -185,6 +191,7 @@ class MatrixPortal(PortalBase):
             line_spacing=line_spacing,
             text_anchor_point=text_anchor_point,
             is_data=is_data,
+            text=text,
         )
 
         self._text[index]["scrolling"] = scrolling
