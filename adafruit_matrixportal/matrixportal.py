@@ -144,7 +144,7 @@ class MatrixPortal(PortalBase):
         line_spacing=1.25,
         text_anchor_point=(0, 0.5),
         is_data=True,
-        text=None
+        text=None,
     ):
         """
         Add text labels with settings
@@ -191,7 +191,7 @@ class MatrixPortal(PortalBase):
             line_spacing=line_spacing,
             text_anchor_point=text_anchor_point,
             is_data=is_data,
-            text=text
+            text=text,
         )
 
         self._text[index]["scrolling"] = scrolling
