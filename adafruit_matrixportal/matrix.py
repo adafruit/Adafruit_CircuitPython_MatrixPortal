@@ -68,7 +68,6 @@ class Matrix:
         tile_rows=1,
         rotation=0,
     ):
-
         panel_height = height // tile_rows
 
         if not isinstance(color_order, str):

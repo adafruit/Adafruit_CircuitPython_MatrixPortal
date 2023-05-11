@@ -93,7 +93,6 @@ class MatrixPortal(PortalBase):
         tile_rows=1,
         rotation=0,
     ):
-
         graphics = Graphics(
             default_bg=default_bg,
             bit_depth=bit_depth,
