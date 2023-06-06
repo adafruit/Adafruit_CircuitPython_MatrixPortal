@@ -79,8 +79,11 @@ class Matrix:
         if -1 in (red_index, green_index, blue_index):
             raise ValueError("color_order should contain R, G, and B")
 
-        if "Matrix Portal M4" in os.uname().machine:
-            # MatrixPortal M4 Board
+        if (
+            "Adafruit Matrix Portal" in os.uname().machine
+            or "Adafruit MatrixPortal" in os.uname().machine
+        ):
+            # MatrixPortal Board
             addr_pins = [board.MTX_ADDRA, board.MTX_ADDRB, board.MTX_ADDRC]
             if panel_height > 16:
                 addr_pins.append(board.MTX_ADDRD)
