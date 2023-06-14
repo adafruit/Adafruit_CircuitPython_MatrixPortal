@@ -62,6 +62,12 @@ class Network(NetworkBase):
         if "debug" in kwargs:
             debug = kwargs.pop("debug")
 
+        if os.uname().sysname != "samd51":
+            if "external_spi" in kwargs:
+                kwargs.pop("external_spi")
+            if "esp" in kwargs:
+                kwargs.pop("esp")
+
         status_neopixel = kwargs.pop("status_neopixel", None)
         if status_neopixel:
             status_led = neopixel.NeoPixel(status_neopixel, 1, brightness=0.2)
