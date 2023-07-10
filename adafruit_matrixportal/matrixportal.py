@@ -63,7 +63,7 @@ class MatrixPortal(PortalBase):
     :param debug: Turn on debug print outs. Defaults to False.
     :param int width: The total width of the display(s) in Pixels. Defaults to 64.
     :param int height: The total height of the display(s) in Pixels. Defaults to 32.
-    :param bool derpentine: Used when panels are arranged in a serpentine pattern rather
+    :param bool serpentine: Used when panels are arranged in a serpentine pattern rather
                             than a Z-pattern. Defaults to True.
     :param int tile_rows: Used to indicate the number of rows the panels are arranged in.
                           Defaults to 1.
