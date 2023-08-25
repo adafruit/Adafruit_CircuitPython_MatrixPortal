@@ -36,6 +36,7 @@ autodoc_mock_imports = [
     "wifi",
     "ssl",
     "socketpool",
+    "bitmaptools",
 ]
 
 
