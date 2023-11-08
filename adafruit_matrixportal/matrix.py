@@ -69,6 +69,8 @@ class Matrix:
         rotation=0,
     ):
         panel_height = height // tile_rows
+        self._width = width
+        self._height = height
 
         if not isinstance(color_order, str):
             raise ValueError("color_index should be a string")
@@ -158,6 +160,9 @@ class Matrix:
         if alt_addr_pins is not None:
             addr_pins = alt_addr_pins
 
+        if height < (2 << len(addr_pins)):
+            height = 2 << len(addr_pins)
+
         try:
             displayio.release_displays()
             if tile_rows > 1:
@@ -207,3 +212,13 @@ class Matrix:
             raise
         except ValueError:
             raise RuntimeError("Failed to initialize RGB Matrix") from ValueError
+
+    @property
+    def width(self):
+        """The initialized width of the display in pixels"""
+        return self._width
+
+    @property
+    def height(self):
+        """The intialized height of the display in pixels"""
+        return self._height
