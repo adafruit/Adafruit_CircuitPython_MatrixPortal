@@ -92,6 +92,7 @@ class MatrixPortal(PortalBase):
         serpentine=True,
         tile_rows=1,
         rotation=0,
+        use_wifi=True,
     ):
         graphics = Graphics(
             default_bg=default_bg,
@@ -106,13 +107,16 @@ class MatrixPortal(PortalBase):
             debug=debug,
         )
 
-        network = Network(
-            status_neopixel=status_neopixel,
-            esp=esp,
-            external_spi=external_spi,
-            extract_values=False,
-            debug=debug,
-        )
+        if use_wifi:
+            network = Network(
+                status_neopixel=status_neopixel,
+                esp=esp,
+                external_spi=external_spi,
+                extract_values=False,
+                debug=debug,
+            )
+        else:
+            network = None
 
         super().__init__(
             network,
