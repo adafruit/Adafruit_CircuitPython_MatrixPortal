@@ -32,7 +32,6 @@ autodoc_mock_imports = [
     "rtc",
     "rgbmatrix",
     "framebufferio",
-    "secrets",
     "wifi",
     "ssl",
     "socketpool",
