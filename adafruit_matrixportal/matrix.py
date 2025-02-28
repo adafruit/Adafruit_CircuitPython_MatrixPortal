@@ -41,18 +41,19 @@ class Matrix:
     """Class representing the Adafruit RGB Matrix. This is used to automatically
     initialize the display.
 
-    :param int width: The width of the display in Pixels. Defaults to 64.
-    :param int height: The height of the display in Pixels. Defaults to 32.
+    :param int width: The total width of the display(s) in Pixels. Defaults to 64.
+    :param int height: The total height of the display(s) in Pixels. Defaults to 32.
     :param int bit_depth: The number of bits per color channel. Defaults to 2.
     :param list alt_addr_pins: An alternate set of address pins to use. Defaults to None
     :param string color_order: A string containing the letter "R", "G", and "B" in the
                                order you want. Defaults to "RGB"
-    :param int width: The total width of the display(s) in Pixels. Defaults to 64.
-    :param int height: The total height of the display(s) in Pixels. Defaults to 32.
-    :param bool Serpentine: Used when panels are arranged in a serpentine pattern rather
+    :param bool serpentine: Used when panels are arranged in a serpentine pattern rather
                             than a Z-pattern. Defaults to True.
     :param int tiles_rows: Used to indicate the number of rows the panels are arranged in.
                            Defaults to 1.
+    :param int rotation: The rotation of the display in degrees clockwise.
+                         Must be in 90 degree increments (0, 90, 180, 270).
+                         Defaults to 0.
     """
 
     # pylint: disable=too-few-public-methods,too-many-branches,too-many-statements,too-many-locals
