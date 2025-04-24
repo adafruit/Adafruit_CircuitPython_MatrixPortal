@@ -141,8 +141,8 @@ class Matrix:
                     board.D12,
                 ]
                 clock_pin = board.D13
-                latch_pin = board.D0
-                oe_pin = board.D1
+                latch_pin = board.RX
+                oe_pin = board.TX
         else:
             # Metro/Grand Central Style Board
             if alt_addr_pins is None and height <= 16:
