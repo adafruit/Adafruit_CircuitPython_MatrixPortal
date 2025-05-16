@@ -27,6 +27,7 @@ Implementation Notes
 """
 
 from adafruit_portalbase.graphics import GraphicsBase
+
 from adafruit_matrixportal.matrix import Matrix
 
 __version__ = "0.0.0+auto.0"
@@ -52,7 +53,6 @@ class Graphics(GraphicsBase):
 
     """
 
-    # pylint: disable=too-few-public-methods
     def __init__(
         self,
         **kwargs,

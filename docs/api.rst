@@ -1,5 +1,8 @@
 
 
+API Reference
+#############
+
 .. automodule:: adafruit_matrixportal.matrix
    :members:
 
