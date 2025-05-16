@@ -4,9 +4,12 @@
 """
 This example checks the current Bitcoin price and displays it in the middle of the screen
 """
+
 import time
+
 import board
 import terminalio
+
 from adafruit_matrixportal.matrixportal import MatrixPortal
 
 # You can display in 'GBP', 'EUR' or 'USD'

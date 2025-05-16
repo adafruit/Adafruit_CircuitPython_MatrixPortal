@@ -28,10 +28,12 @@ Implementation Notes
 
 import gc
 from time import sleep
+
 import terminalio
 from adafruit_portalbase import PortalBase
-from adafruit_matrixportal.network import Network
+
 from adafruit_matrixportal.graphics import Graphics
+from adafruit_matrixportal.network import Network
 
 __version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_MatrixPortal.git"
@@ -70,7 +72,6 @@ class MatrixPortal(PortalBase):
 
     """
 
-    # pylint: disable=too-many-locals
     def __init__(
         self,
         *,
@@ -133,7 +134,6 @@ class MatrixPortal(PortalBase):
 
         gc.collect()
 
-    # pylint: disable=too-many-arguments, arguments-differ
     def add_text(
         self,
         text_position=None,
@@ -204,8 +204,6 @@ class MatrixPortal(PortalBase):
 
         return index
 
-    # pylint: enable=too-many-arguments, arguments-differ
-
     def set_background(self, file_or_color, position=None):
         """The background image to a bitmap file.
 
@@ -267,7 +265,5 @@ class MatrixPortal(PortalBase):
                 sleep(frame_delay)
         else:
             raise RuntimeError(
-                "Please assign text to the label with index {} before scrolling".format(
-                    self._scrolling_index
-                )
+                f"Please assign text to the label with index {self._scrolling_index} before scrolling"  # noqa: E501
             )

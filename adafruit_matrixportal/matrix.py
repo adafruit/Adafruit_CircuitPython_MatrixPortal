@@ -27,11 +27,11 @@ Implementation Notes
 """
 
 import os
+
 import board
 import displayio
-import rgbmatrix
 import framebufferio
-
+import rgbmatrix
 
 __version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_MatrixPortal.git"
@@ -56,7 +56,6 @@ class Matrix:
                          Defaults to 0.
     """
 
-    # pylint: disable=too-few-public-methods,too-many-branches,too-many-statements,too-many-locals
     def __init__(
         self,
         *,
@@ -77,7 +76,7 @@ class Matrix:
         red_index = color_order.find("r")
         green_index = color_order.find("g")
         blue_index = color_order.find("b")
-        if -1 in (red_index, green_index, blue_index):
+        if -1 in {red_index, green_index, blue_index}:
             raise ValueError("color_order should contain R, G, and B")
 
         if (
@@ -146,9 +145,7 @@ class Matrix:
         else:
             # Metro/Grand Central Style Board
             if alt_addr_pins is None and height <= 16:
-                raise RuntimeError(
-                    "Pin A2 unavailable in this mode. Please specify alt_addr_pins."
-                )
+                raise RuntimeError("Pin A2 unavailable in this mode. Please specify alt_addr_pins.")
             addr_pins = [board.A0, board.A1, board.A2, board.A3]
             rgb_pins = [board.D2, board.D3, board.D4, board.D5, board.D6, board.D7]
             clock_pin = board.A4

@@ -26,8 +26,9 @@ Implementation Notes
 
 """
 
-import os
 import gc
+import os
+
 import neopixel
 from adafruit_portalbase.network import NetworkBase
 
