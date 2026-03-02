@@ -18,7 +18,9 @@ Introduction
     :alt: Code Style: Ruff
 
 CircuitPython helper for Adafruit MatrixPortal M4, Adafruit RGB Matrix Shield + Metro M4 Airlift Lite,
-and Adafruit RGB Matrix FeatherWings
+and Adafruit RGB Matrix FeatherWings.
+
+This library extends the CircuitPython `PortalBase library <https://github.com/adafruit/Adafruit_CircuitPython_PortalBase>`_ - see library for additional information.
 
 
 Dependencies
