@@ -235,9 +235,7 @@ class MatrixPortal(PortalBase):
         if self._scrolling_index is None:  # Not initialized yet
             return
 
-        self._text[self._scrolling_index]["label"].x = (
-            self._text[self._scrolling_index]["label"].x - 1
-        )
+        self._text[self._scrolling_index]["label"].x -= 1
         line_width = (
             self._text[self._scrolling_index]["label"].bounding_box[2]
             * self._text[self._scrolling_index]["scale"]

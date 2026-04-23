@@ -21,12 +21,12 @@ DATA_LOCATION = ["bpi", CURRENCY, "rate_float"]
 
 def text_transform(val):
     if CURRENCY == "USD":
-        return "$%d" % val
+        return f"${val:d}"
     if CURRENCY == "EUR":
-        return "‎€%d" % val
+        return f"‎€{val:d}"
     if CURRENCY == "GBP":
-        return "£%d" % val
-    return "%d" % val
+        return f"£{val:d}"
+    return f"{val:d}"
 
 
 # the current working directory (where this file is)
