@@ -102,7 +102,7 @@ class Matrix:
             oe_pin = board.MTX_OE
         elif "Feather" in os.uname().machine:
             # Feather Style Board
-            if "nrf52" in os.uname().sysname:
+            if "nrf52" in os.uname().machine.lower():
                 # nrf52840 Style Feather
                 addr_pins = [board.D11, board.D5, board.D13]
                 if panel_height > 16:
@@ -111,7 +111,7 @@ class Matrix:
                 clock_pin = board.D12
                 latch_pin = board.RX
                 oe_pin = board.TX
-            elif "rp2040" in os.uname().sysname:
+            elif "rp2040" in os.uname().machine.lower():
                 # rp2040 Style Feather
                 addr_pins = [board.D25, board.D24, board.A3]
                 if panel_height > 16:
