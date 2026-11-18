@@ -32,7 +32,7 @@ import os
 import neopixel
 from adafruit_portalbase.network import NetworkBase
 
-if "samd51" in os.uname().sysname:
+if "samd51" in os.uname().machine.lower():
     from adafruit_portalbase.wifi_coprocessor import WiFi
 else:
     from adafruit_portalbase.wifi_esp32s2 import WiFi
@@ -63,7 +63,7 @@ class Network(NetworkBase):
         if "debug" in kwargs:
             debug = kwargs.pop("debug")
 
-        if "samd51" not in os.uname().sysname:
+        if "samd51" not in os.uname().machine.lower():
             if "external_spi" in kwargs:
                 kwargs.pop("external_spi")
             if "esp" in kwargs:
